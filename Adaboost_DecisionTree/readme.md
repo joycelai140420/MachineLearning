@@ -19,5 +19,5 @@ AdaBoost（自适应增强）是一种集成学习方法，经常与决策树结
 
 理论：自己上网找，大意就是每个学习结果取平均。
 
-代码就利用Adaboost+DecisionTree 针对初音图片进行剪影的分类
+代码就利用Adaboost+DecisionTree 针对初音图片进行剪影
 
