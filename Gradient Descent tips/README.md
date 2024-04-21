@@ -34,3 +34,16 @@
 在执行时，梯度下降会计算当前参数值下的损失函数梯度，然后调整参数朝梯度的反方向（即下降最快的方向）移动一定步长，这个步长通常由学习率决定。通过迭代这一过程，梯度下降逐渐驱使参数向使损失函数值最小化的方向调整，直到达到收敛条件或完成设定的迭代次数。
 
 通过上述描述，可以看出梯度下降是一种基于导数的优化方法，主要目的是寻找函数的最小值点，广泛应用于机器学习和人工智能领域中的模型训练和参数调优。
+
+tips:参考台大Hung-yi Lee 课程内容
+
+learning rate调太小，跑得慢，调太大可能找不到local minimum，或是直接飞出去，但观察loss 参数如果是高维度是没有办法visualize，但是你可以 visualize参数的变化对这个loss的变化去观察learning rate应该怎么调整。如下图：
+![1713706519784](https://github.com/joycelai140420/MachineLearning/assets/167413809/9ac56635-c15c-4f43-93c3-622e121181b4)
+但也有自动的方法调整learning rat，其中简单方法就是下面这个方法。
+
+Adaptivt learning rate: 
+AdaGrad的方法就是把每一个learning rat都除上之前算出来的微分值的root mean square，请参考在Regression的代码 Regression model's Gradient Descent and AdaGrad demo.py ，不过有个问题就是最后的update参数会越来越慢，但也可以用另一个方法是Adam。
+
+
+
+
