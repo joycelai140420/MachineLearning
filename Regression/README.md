@@ -23,3 +23,5 @@ Regression（回归分析）和Logistic Regression（逻辑回归）不是一样
 
 简易描述差异就是线性回归（Linear Regression）本质上是一系列变量的线性组合再加上偏置项b，而逻辑回归（Logistic Regression） 是在线性回归（Linear Regression） 的基础上加了一层sigmoid函数，将线性函数转变为非线性函数。sigmoid函数的形状呈现为“S”形（如下图所示），它能将任意实数映射到0-1之间的某个概率值上。
 
+tips:
+loss function : Estimation error 估测误差，就是跟目标值的差异，差越多就是越不好的function，差越多小就是越好的function 。所以要选用arg min L(f)。
