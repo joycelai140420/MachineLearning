@@ -39,9 +39,13 @@ Overfitting : if your can fit the training data,but large error on testing data,
 
 你千万别认为拿3个不同的model来训练你的training set,在testing set表现最好的那个model，就认为也可以训练真实现实其他testing set，因为在真正的testing set上，这个model不见得是最好的。
 ![1713694742786](https://github.com/joycelai140420/MachineLearning/assets/167413809/1dc70ee9-77bd-4fa5-9c33-03b0a4e80311)
+
+根据Hung-yi Lee 老师说明是采用交叉验证，其图片是来自于根据Hung-yi Lee 老师讲课内容
 cross Validation 交叉验证方法：
 把training set 分成两组，一组training set 拿来做train model，一组Validation set是用来选择model，就是将训练好的model再用Validation set跑一下看哪一个performanc是最好的，在图示是model 3最好，你在将training set跟Validation set全部的data 在model 3在train一次，再用public testing set 根据model 3跑结果也许看起来err会比原来的大，但是这样才能真正反映在private  testing set 上的error
+
 參考：https://www.chioka.in/how-to-select-your-final-models-in-a-kaggle-competitio/
+
 N-fold cross Validation 方法：
 如果觉得可能分一次一组training set 和一组Validation set会分不好，你就可以采取这个方法，下面这图是就是分成三份，然后在根据图示分组，算出每个model的err在算出各自的平均err然后选定一个表现好的model在将全部的data 在model 1在train一次,再去public testing set跟private  testing set 去训练出结果。
 ![1713703429034](https://github.com/joycelai140420/MachineLearning/assets/167413809/4b1ab79d-9caa-4763-929c-6cfee1810575)
