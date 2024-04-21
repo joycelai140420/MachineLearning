@@ -30,3 +30,13 @@ $\lambda$ 值越大，代表考慮 smooth 這項的影響力越大，得到的 f
 $\lambda$ 值越大，training data 上得到的 error 越大（因為傾向考慮 w 的值而減少考慮 error）
 $\lambda$ 值越大，testing data 上的 error 可能會變小 ($\lambda = 100$)，但是 $\lambda$ 太大時，error 又會變大 ($\lambda=1000$)
 所以，我們必須調整 $\lambda$ 來決定 function 的平滑程度，找到最小的 testing error。
+
+模型判断是bias大还是variance大，根据Hung-yi Lee 老师说明是：
+Underfitting : if your model cannot even fit the training examples,then you have large bias.
+Overfitting : if your can fit the training data,but large error on testing data,then you probably have large variance.
+如果是large bias，你要做的是redesign model，表示你现在这个model里面可能根本没有包含你的targe。方法可以使修改你的model加入更多feature。或是修正你的function set。找更多的data都是没有帮助。
+如果是large variance，要就是增加你的data，或是generate假的training data，根据业务知识点或自身理解制造更多data。例如手写辨识的时候，因为每个人手写到字迹不一样就把training data里面图片左转15度右转15度等等生成不同角度的图片来制造更多training data。或是影像辨识，只有左边开过来的火车，没有右边开过来的火车，就将图片进行翻转。语音辨识例如只有男生的training data没有女生就用变声器转换一下来生成更多training data。如果没有办法增加你的training data，也可以使用Regularzation，就是在loss function 后面加上一个term，让其function越平滑，让你的参数越小越好，如前面说的但也有可能会伤害bias，所以要调整好W让你在bias跟variance取得平衡。
+
+你千万别认为拿3个不同的model来训练你的training set,在testing set表现最好的那个model，就认为也可以训练真实现实其他testing set，因为在真正的testing set上，这个model不见得是最好的。
+![1713694742786](https://github.com/joycelai140420/MachineLearning/assets/167413809/1dc70ee9-77bd-4fa5-9c33-03b0a4e80311)
+
