@@ -20,6 +20,7 @@ Regression（回歸分析）和Logistic Regression（邏輯回歸）不是一樣
   邏輯回歸：用於預測事件發生的概率，如是否發生某種疾病、用戶是否點擊廣告等。
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/b8c98fdf-3ddb-40d7-a306-31c5b9ff6752)
-简易描述差异就是线性回归（Linear Regression）本质上是一系列变量 
- 的线性组合再加上偏置项b，而逻辑回归（Logistic Regression） 是在线性回归（Linear Regression） 的基础上加了一层sigmoid函数，将线性函数转变为非线性函数。sigmoid函数的形状呈现为“S”形（如下图所示），它能将任意实数映射到0-1之间的某个概率值上。
+
+简易描述差异就是线性回归（Linear Regression）本质上是一系列变量的线性组合再加上偏置项b，而逻辑回归（Logistic Regression） 是在线性回归（Linear Regression） 的基础上加了一层sigmoid函数，将线性函数转变为非线性函数。sigmoid函数的形状呈现为“S”形（如下图所示），它能将任意实数映射到0-1之间的某个概率值上。
+
 這兩種技術在統計學和機器學習領域中都非常重要，並且根據預測的需求選擇合適的模型是解決問題的關鍵。
