@@ -44,6 +44,6 @@ learning rate调太小，跑得慢，调太大可能找不到local minimum，或
 Adaptivt learning rate: 
 AdaGrad的方法就是把每一个learning rat都除上之前算出来的微分值的root mean square，请参考在Regression的代码 Regression model's Gradient Descent and AdaGrad demo.py ，不过有个问题就是最后的update参数会越来越慢，但也可以用另一个方法是Adam。
 
-
+Stochastic Gradient Descent（SGD） :會比較快，其原理是只取n個example 做Gradient Descent ，如果data少就不用。随机梯度下降的核心优势在于每次迭代计算速度快，因为它每次只处理一个训练样本，从而快速并频繁地更新模型参数。这通常会使得收敛过程更加快速，在处理大规模数据集时特别有效。然而，SGD的缺点是更新过程中的高方差，可能导致解的质量波动比较大。
 
 
