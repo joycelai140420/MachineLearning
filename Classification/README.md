@@ -36,7 +36,30 @@ Logistic Regression：有通過 $sigmoid function$，output 的值介於 0~1
 Linear Regression：單純將 $feature*w+b$，output 可以是任何值
 
 那么这边为什么推荐用cross entropy是因为参数update的时候变化量越大，步伐就可以跨越大，越快跑到目标点，square error 是红色的线，比较平滑，所以参数update的时候变化量越小，步伐就可以跨越小，越慢跑到目标点。
-![1713779624071](https://github.com/joycelai140420/MachineLearning/assets/167413809/f37c074e-1c66-4e46-b62a-4bfeef1310f8)
+![1713779854769](https://github.com/joycelai140420/MachineLearning/assets/167413809/740169bc-bc38-4652-b9e3-fdbc12c58f76)
+
+Probabilistic Generative Models跟Logistic Regression不同是，Logistic Regression（Discriminative）是不做任何假设，但是Probabilistic Generative Models（Gernerative)对probability distribution是有假设前提，例如假设是伯努利分布等等。从文献上很多人会说Discriminative表现比较好，那么什么时候用Gernerative会比较好呢？参考台大Hung-yi Lee老师的课程说明。
+
+何時 Generative model 的表現較比 Discriminative model 好
+
+資料量大小：
+
+Discriminative model 因爲不做任何假設，故 performance 受資料影響很大 Generative model 會做假設（如同自行腦補），資料量很少時，較有優勢
+資料量小：Discriminative model 誤差較大，Generative model 表現可能較好 資料量大：Discriminative model 誤差較小，表現較有可能優於 Generative model
+
+Noise 存在：
+
+資料有 noise 時，因為 label 本身就有些問題，故一些假設可能可以把有問題的 data 忽略掉 Generative model 的表現可能較 Discriminative 好
+
+分割資料來源：
+
+Discriminative model 直接假設一個 posterior probability Generative model 可將 formulation 拆成 prior 跟 class-dependent 的 probability 兩項 而這兩項可以來自不同的資料來源
+
+舉例： 語音辨識使用 NN，是 discriminative 的方法； 但是整個語音辨識系統，是 generative 的 system。
+
+prior 的部分使用文字的 data 處理，class-dependent 的部分，需要聲音和文字的配合。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/25b4f578-5331-4924-a858-3ec3501078f0)
 
 
 
