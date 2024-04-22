@@ -30,4 +30,9 @@ Sigmoid函数的输出是一个介于0和1之间的概率值，表示样本属�
 
 实现逻辑回归的代码请参考：Logistic Regression.py
 
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/e1e6d992-c2eb-4116-b6a8-275b8d6a5173)
+Logistic Regression：有通過 $sigmoid function$，output 的值介於 0~1
+Linear Regression：單純將 $feature*w+b$，output 可以是任何值
+
+
 
