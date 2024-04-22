@@ -48,4 +48,11 @@ Stochastic Gradient Descent（SGD） :會比較快，其原理是只取n個examp
 
 Feature Scaling :
 
+就是先将input data 做一下Scaling，就如同台大Hung-yi Lee 课程投影片说，左圖：長橢圓的 error surface 需要不同的 learning rate，也就是要用 adaptive learning。右圖：正圓形的 error surface，不論從哪個點開始，都會向著圓心走。有做 feature scaling，則在參數的 update 上較有效率。
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/e1d391eb-e1d8-49ed-b6f2-85b480873b1f)
+常见方法有下面图是介绍
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/1e4901d2-a862-45fd-b827-53c24720c9be)
+代码范例可以参考Z-Score Normalization and Min-Max Scaling.py代码
+
+
 
