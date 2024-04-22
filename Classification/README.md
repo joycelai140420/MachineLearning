@@ -23,7 +23,10 @@ Sigmoid函数的输出是一个介于0和1之间的概率值，表示样本属�
 
 缺点
 1.	表达能力有限：逻辑回归假设数据是线性可分的，对于复杂的模式或非线性关系可能表现不佳。因為他就是一個直線，如下圖，但可以使用Feature Transformation例如cascading Logistic Regression models
+   
    ![1713792877050](https://github.com/joycelai140420/MachineLearning/assets/167413809/f5c38891-76ef-44a1-a360-231e60e80a0a)
+   ![Uploading 1713793203551.png…]()
+
 
 2.	高度依赖数据表示：对特征工程高度依赖，数据预处理和特征选择的质量直接影响模型性能。
 
