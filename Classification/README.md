@@ -61,6 +61,8 @@ prior 的部分使用文字的 data 處理，class-dependent 的部分，需要�
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/25b4f578-5331-4924-a858-3ec3501078f0)
 
+參考：Probabilistic Generative Models of Bernoulli Distribution.py
+
 
 
 
