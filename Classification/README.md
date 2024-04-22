@@ -28,3 +28,6 @@ Sigmoid函数的输出是一个介于0和1之间的概率值，表示样本属�
 相关内容详解请参考台大Hung-yi Lee老师的课程。
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/c91df5d0-936c-4cfc-bd3d-13bcf4d4b71b)
 
+实现逻辑回归的代码请参考：Logistic Regression.py
+
+
