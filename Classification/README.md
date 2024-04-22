@@ -31,8 +31,13 @@ Sigmoid函数的输出是一个介于0和1之间的概率值，表示样本属�
 实现逻辑回归的代码请参考：Logistic Regression.py
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/e1e6d992-c2eb-4116-b6a8-275b8d6a5173)
+
 Logistic Regression：有通過 $sigmoid function$，output 的值介於 0~1
 Linear Regression：單純將 $feature*w+b$，output 可以是任何值
+
+那么这边为什么推荐用cross entropy是因为参数update的时候变化量越大，步伐就可以跨越大，越快跑到目标点，square error 是红色的线，比较平滑，所以参数update的时候变化量越小，步伐就可以跨越小，越慢跑到目标点。
+![1713779624071](https://github.com/joycelai140420/MachineLearning/assets/167413809/f37c074e-1c66-4e46-b62a-4bfeef1310f8)
+
 
 
 
