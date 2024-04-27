@@ -76,6 +76,9 @@ Step 3: Pick the best function
 
 你可以参考The_first_DNN.py，一个用toolkit，一个只用numpy写的DNN
 
+
+DNN tips:
+
 Batch & Epoch：
 
 做 Deep Learning 時，會將 training data 隨機的選 x 個放進一個 batch，x 即為 batch_size
