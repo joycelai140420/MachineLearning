@@ -76,9 +76,29 @@ Step 3: Pick the best function
 
 你可以参考The_first_DNN.py，一个用toolkit，一个只用numpy写的DNN
 
+Speed Comparison（實作上的比較）
 
+Stochastic Gradient Descent (Batch size = 1) v.s. Mini-batch (Batch size > 1)
 
+如下圖，實際在 GTX980 跑 MNIST 的 50000 個 examples 時
 
+batch size = 1：一個 epoch 跑166s batch size = 10：一個 epoch 跑 17s
 
+亦即，batch size 越大，每算一個 epoch 的時間越快(短) 故，在同樣時間內，參數 update的數目幾乎相同 故，選擇 batch size 較大者，因為較 穩定
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/e09ccbef-d115-4e6b-95cc-8bbeb15c5524)
+
+那為何不將 batch size 設非常大呢？
+
+硬體限制，GPU 將無法平行運算
+
+容易陷入 saddle point 或 local minimum 中 (它的 error surface 是坑坑洞洞的)
+以矩陣運算解釋，如下圖
+
+Stochastic Gradient Descent：黃色和綠色 z^1 依序和 W^1 做運算 Mini-batch：黃色和綠色 z^1 同時和 W^1 做運算
+
+可明顯看出 Mini-batch 運算速度較快
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/a17b323f-c073-498a-be71-52202e027750)
 
 
