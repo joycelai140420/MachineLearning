@@ -76,6 +76,19 @@ Step 3: Pick the best function
 
 你可以参考The_first_DNN.py，一个用toolkit，一个只用numpy写的DNN
 
+Batch & Epoch：
+
+做 Deep Learning 時，會將 training data 隨機的選 x 個放進一個 batch，x 即為 batch_size
+
+不斷地 pick batch，直到所有的 mini batch 都被 update 一次，即為一個 epoch
+
+nb_epoch 就是重複 update 幾次 epoch
+
+本例中， batc_size = 100， nb_epoch = 20 1 個 epoch 中會 update 100 次參數，20 個 epoch 即總共會 update 2000 次參數
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/f839bfe0-b03c-4376-8123-a3f1ce13208d)
+
+
 Speed Comparison（實作上的比較）
 
 Stochastic Gradient Descent (Batch size = 1) v.s. Mini-batch (Batch size > 1)
