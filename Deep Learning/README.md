@@ -1,4 +1,4 @@
-DNN初探笔记
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/3dda1b36-5e31-4bcc-8bdf-3d4ddd29602a)DNN初探笔记
 
 全连接前馈神经网络（Fully Connected Feedforward Network）
 也称为多层感知机（MLP），是深度学习中最基础的一种网络结构。这种网络结构包括一个输入层、若干个隐藏层以及一个输出层。每一层由多个神经元组成，每个神经元与前一层的所有神经元相连接（全连接）。怎么连接是手动设计，
@@ -39,7 +39,12 @@ DNN初探笔记
 
 需要大量的数据：为了表现良好，通常需要大量数据来训练。
 
-请参考 台大Hung-yi Lee 课程内容
+后面请参考 台大Hung-yi Lee 课程内容
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/127bd020-1431-4a95-8604-397d506c08c7)
+
+Step 1: Define a Neural Network
+
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/7cbe0c0d-9311-4c80-a5dd-6eae2c30b005)
 
@@ -57,6 +62,21 @@ Output layer 即為 Multi-Class Classifier
 將 hidden layer 視為 feature extractor 將 output layer 視為 multi-class classifier，最後一個 layer 會加上 Softmax function
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/43c6c715-5470-4e10-bb9a-d720905edc2d)
+
+Step 2: Goodness of function
+
+決定參數的好壞，計算 output (y) 跟目標 y^ 之間的 cross entropy，調整 network 的參數，讓 cross entropy 越小越好。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/2a13f647-521c-4bc0-93df-a1414237f50f)
+
+Step 3: Pick the best function
+將所有 data 的 cross entropy 全部加起來的總和，得到 total loss (L)。在 function set 中找一個 function，或是找一組 network 的 parameter，讓 total loss 越小越好。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/18214e0e-5904-4261-a780-ddb6053231fc)
+
+你可以参考The_first_DNN.py，一个用toolkit，一个只用numpy写的DNN
+
+
 
 
 
