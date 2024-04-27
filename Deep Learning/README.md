@@ -117,4 +117,4 @@ Stochastic Gradient Descent：黃色和綠色 z^1 依序和 W^1 做運算 Mini-b
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/a17b323f-c073-498a-be71-52202e027750)
 
-
+你可以参考Keras_helloworld_DNN.py 其中范例是参考台大Hung-yi Lee 老师课堂范例，另外我再添加实现N-fold cross Validation范例
