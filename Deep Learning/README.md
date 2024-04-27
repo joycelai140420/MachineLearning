@@ -7,7 +7,7 @@ DNN初探笔记
 
 网络结构：网络由多层组成，其中每一层都是前一层的线性变换（加ｗ加ｂ）后通过一个非线性激活函数处理的结果。
 
-激活函数：通常使用ReLU、Sigmoid或Tanh等函数，增加网络的非线性，使其能够学习更复杂的函数映射。
+激活函数：通常使用ReLU、Sigmoid或Tanh等函数（不过现在比较少再用Sigmoid后面会解释），增加网络的非线性，使其能够学习更复杂的函数映射。
 
 前向传播：数据从输入层进入，经过各隐藏层的处理，最后通过输出层得到预测结果。
 
@@ -46,4 +46,16 @@ DNN初探笔记
 「Deep」意即 Many hidden layers
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/e1d01321-48b0-4192-816a-f65803762b7e)
+
+![1714186450537](https://github.com/joycelai140420/MachineLearning/assets/167413809/7bdafae9-d91a-4230-99f5-15a2f44ffc6d)
+
+Output layer 即為 Multi-Class Classifier
+
+將 hidden layer 視為 feature extractor 將 output layer 視為 multi-class classifier，最後一個 layer 會加上 Softmax function
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/43c6c715-5470-4e10-bb9a-d720905edc2d)
+
+
+
+
 
