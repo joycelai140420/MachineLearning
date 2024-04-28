@@ -163,4 +163,14 @@ Stochastic Gradient Descent：黃色和綠色 z^1 依序和 W^1 做運算 Mini-b
 
 我們剛才提到 deep learning 的流程裡面，在訓練的時候有兩個問題。所以接下來我們會對這兩個問題分開來討論，介紹在遇到這兩個問題的時候，有什麼解決方法
 
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/776e70a3-ec0a-4fea-83e1-5d2c868e25b0)
 
+首先，如果在 training data 上的結果不好時，可以檢查一下是不是在 network 架構設計時設計得不好。舉例來說，可能 model 使用的 activation function 是比較不好的 activation function，或者說是對 training 比較不利的 activation function。可能可以透過換一些新的 activation function，得到比較好的結果。
+
+我們知道，在 1980 年代的時候，比較常用的 activation function 是 sigmoid function。我們之前有稍微解釋為甚麼要使用 sigmoid function。今天如果我們使用 sigmoid function，其實你可能會發現越深的網路表現不一定比較好。
+
+下圖是在 MNIST 手寫數字辨識上面的結果。當 layer 越來越多的時候，準確率一開始持平後來就變低了；當 layer 是 9 層、10 層時整個結果就崩潰了。有些人看到這張圖，就會說「9 層、10 層參數太多了，overfitting」如之前所說，這種情況並不是 overfitting。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/dd7ff6dd-35a4-4f70-8c90-508957a10b8d)
+
+為甚麼呢？首先要檢查表現不好是不是來自於 overfitting 必須要看 training set 的結果。而這張圖表，是 training set 的結果，所以這並不是 overfitting。這個是訓練時，就訓練失敗了。其中一個原因叫做 Vanishing Gradient。當你把 network 疊得很深的時候，在最靠近 input 的幾個層的這些參數，對最後 loss function 的微分值會很小；而在比較靠近 output 的幾個層的微分值會很大。因此，當你設定同樣的 learning rate 時，會發現靠近 input 的地方參數更新的速度是很慢的；靠近 output 的地方參數更新的速度是很快的。
