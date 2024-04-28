@@ -274,11 +274,53 @@ sigmoid function 會把負無窮大到正無窮大之間的值都硬壓到 0~1 �
 
 你可以参考Maxout network.py范例做法。
 
+在Training 时期修正模型还有一个方法就是adaptive 的 learning rate。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/c5e3c146-d2b0-42d0-9a66-ec9cb850cae6)
+
+其實 adaptive 的 learning rate，之前已經有介紹過：之前提到過的 Adagrad，做法就是每一個 parameter 都要有不同的 learning rate。於是我們就把一個固定的 learning rate eta 除掉這一個參數過去所有 gradient 值的平方和開根號，就得到新的 parameter。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/bf34f74e-7847-4c48-a4e0-86325d520529)
 
 
+而 Adagrad 的精神就是假設我們今天考慮兩個參數 w_1 和 w_2，w_1 是在水平的方向上，它平常 gradient 都比較小，那它是比較平坦的，給它比較大的 learning rate。反過來說，在垂直方向上平常 gradient 都是比較大的，所以它是比較陡峭的，給它比較小的 learning rate。但是實際上我們面對的問題有可能是比 Adagrad 可以處理的問題更加複雜的。也就是說，我們之前在做這個 Linear Regression 的時候，我們觀察到的 optimization 的 loss function 是像上圖的 convex 的形狀。但實際上，當我們在做 deep learning 的時候，這個 loss function 可以是任何形狀。
 
+Adagrad 的主要思想是对频繁出现的特征降低其学习率，对不频繁的特征提高其学习率。这使得模型在学习不频繁特征时更为敏感，从而能更好地捕捉稀疏数据中的信息。
 
+优点：
 
+自适应学习率：各参数有各自的学习率，对于稀疏数据的特征能自动调整学习速度，有助于更快的学习这些特征。
 
+简单易实现：与标准的梯度下降相比，Adagrad 只需要在更新步骤中加入梯度的历史信息。
 
+缺点：
 
+学习率单调递减：由于累积梯度平方和只增不减，导致学习率随着迭代逐渐减小并最终趋近于零，这可能使得训练过程在后期几乎停滞不前。
+
+对初始学习率敏感：初始学习率的选择可能对模型的性能有较大影响。
+
+由于这些缺点，Adagrad 在实践中常被其改进版本，如 AdaDelta 或 Adam 所取代，这些算法试图解决学习率持续减小的问题。你可以参考Maxout network.py里面已经使用Adam（model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+）
+
+因为累积梯度平方和只增不减，导致学习率随着迭代逐渐减小并最终趋近于零，这可能使得训练过程在后期几乎停滞不前。所以有一個 Adagrad 的進階版叫做 RMSProp。
+
+RMSProp（Root Mean Square Propagation）是由 Geoff Hinton 提出的一种自适应学习率方法，旨在解决 Adagrad 在训练深层神经网络时遇到的一个主要问题：学习率随着迭代不断减小至接近零，使得模型在训练后期几乎无法进一步优化。RMSProp 通过引入衰减系数来解决 Adagrad 学习率不断减小的问题。它保持一个移动（衰减的）平均值对梯度的平方，而不是像 Adagrad 那样累积所有过去梯度的平方。
+
+算法步骤
+
+1.选择一个初始学习率 η 和两个参数：衰减率γ（通常设为 0.9）和一个小常数ϵ（通常是1𝑒−8），用于保持数值稳定性，避免除零错误。
+
+2.计算梯度 gt在每个参数上的偏导数。
+
+3.更新累积的平方梯度 vt。与 Adagrad 直接累计所有历史梯度平方不同，RMSProp 计算梯度平方的指数加权移动平均：
+
+![1714288380453](https://github.com/joycelai140420/MachineLearning/assets/167413809/ccc0b31a-a76c-4caa-b7f6-93c51f4e98cd)
+
+4.调整每个参数。与 Adagrad 类似，参数更新使用计算出的梯度和调整后的学习率：
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/3a643af1-97ae-4fa9-a2f6-1ea05c48bebb)
+
+RMSProp 是否能改善 Adagrad 的问题？
+
+RMSProp 的主要改进在于其使用移动平均而非累积所有历史梯度平方，这意味着它不会让学习率持续降低至接近零。这使得 RMSProp 在线和非静态设置中特别有用，因为它可以快速适应新的数据模式。此外，它常常能有效避免深层网络训练过程中的梯度消失问题。
+
+你可以参考RMSProp.py范例来了解运作逻辑。
