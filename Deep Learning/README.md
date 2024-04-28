@@ -260,6 +260,22 @@ sigmoid function 會把負無窮大到正無窮大之間的值都硬壓到 0~1 �
 
 那此時，有人就會提出問題：為甚麼是 0.01，而不是 0.07, 0.08 之類的數值呢？所以，就有人提出了 Parametric ReLU：在負的這側呢 a = z * alpha 。alpha 是一個 network 的參數，它可以透過 training data 被學出來，甚至每一個 neuron 都可以有不同的 alpha 的值。
 
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/463aba09-0609-4154-9755-77e70e33ba9b)
+
+那又會有人問為甚麼一定要是 ReLU 這個樣子呢？所以，後來又有一個更進階的想法叫做 Maxout network。Maxout network 會讓 network 自動學它的 activation function。而因為現在 activation function 是自動學出來的，所以 ReLU 就只是 Maxout network 的一個 special case。也就是說 Maxout network 可以學出像 ReLU 這樣的 activation function，但是也可以學出其他的 activation function，training data 會決定現在的 activation function 應該要長甚麼樣子。
+
+假設現在 input 是一個 2 dimension 的 vector [x_1, x_2] 。然後把 [x_1, x_2] 乘上不同的 weight
+
+分別得到四個 value： 5, 7, -1, 1。本來這四個值應該要通過 activation function，不管是 sigmoid function 還是 ReLU，來得到另外一個 value。但是在 Maxout network 裡面我們會把這些 value group 起來，而哪些 value 應該被 group 起來這件事情是事先決定的。比如說，在這個例子中以上這兩個 value 是一組，以下這兩個 value 是一組，然後在同一個組裡面選一個值最大的當作 output。比如說，上面這個組就選 7，而下面這個組就選 1。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/548c8584-b213-4cdd-a280-c64edc6b6ab7)
+
+這件事情其實就跟 Max Pooling 一樣，只是我們現在不是在 image 上做 Max Pooling，而是在一個 layer 上做 Max Pooling。我們把本來要放到 neuron 的 activation function 的這些 input 的值 group 起來，然後只選 max 當作 output，這樣就不用 activation function，得到的值是 7 跟 1。這個作法就是一個 neuron，只是它的 output 是一個 vector，而不是一個值。那接下來這兩個值乘上不同的 weight，就會得到另外一排不同的值，然後一樣把它們做 grouping。我們一樣從每個 group 裡面選最大的值：1 跟 2 就選 2，4 跟 3 就選 4。在實作上，幾個 element 要不要放在同一個 group 裡面，是你可以自己決定的。這就跟 network structure 一樣，是你自己需要調的參數。所以，你可以不是兩個 element 放一組，而是 3 個、4 個、5 個都可以。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/f315cd80-71bc-4487-8fa0-4f4f65a2a57d)
+
+
+
 
 
 
