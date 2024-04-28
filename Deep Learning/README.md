@@ -272,7 +272,9 @@ sigmoid function 會把負無窮大到正無窮大之間的值都硬壓到 0~1 �
 
 這件事情其實就跟 Max Pooling 一樣，只是我們現在不是在 image 上做 Max Pooling，而是在一個 layer 上做 Max Pooling。我們把本來要放到 neuron 的 activation function 的這些 input 的值 group 起來，然後只選 max 當作 output，這樣就不用 activation function，得到的值是 7 跟 1。這個作法就是一個 neuron，只是它的 output 是一個 vector，而不是一個值。那接下來這兩個值乘上不同的 weight，就會得到另外一排不同的值，然後一樣把它們做 grouping。我們一樣從每個 group 裡面選最大的值：1 跟 2 就選 2，4 跟 3 就選 4。在實作上，幾個 element 要不要放在同一個 group 裡面，是你可以自己決定的。這就跟 network structure 一樣，是你自己需要調的參數。所以，你可以不是兩個 element 放一組，而是 3 個、4 個、5 個都可以。
 
-![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/f315cd80-71bc-4487-8fa0-4f4f65a2a57d)
+你可以参考Maxout network.py范例做法。
+
+
 
 
 
