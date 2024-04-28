@@ -174,3 +174,44 @@ Stochastic Gradient Descent：黃色和綠色 z^1 依序和 W^1 做運算 Mini-b
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/dd7ff6dd-35a4-4f70-8c90-508957a10b8d)
 
 為甚麼呢？首先要檢查表現不好是不是來自於 overfitting 必須要看 training set 的結果。而這張圖表，是 training set 的結果，所以這並不是 overfitting。這個是訓練時，就訓練失敗了。其中一個原因叫做 Vanishing Gradient。當你把 network 疊得很深的時候，在最靠近 input 的幾個層的這些參數，對最後 loss function 的微分值會很小；而在比較靠近 output 的幾個層的微分值會很大。因此，當你設定同樣的 learning rate 時，會發現靠近 input 的地方參數更新的速度是很慢的；靠近 output 的地方參數更新的速度是很快的。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/00cd9876-bd48-490e-ae7a-d6bf4a4ca831)
+
+所以，你會發現在 input 參數幾乎還是 random 的時候，output 就已經收斂了。在靠近 input 地方的這些參數還是 random 值時，output 的地方就已經根據這些 random 的結果找到一個 local minimum，然後就收斂了。這時你會發現 loss 下降的速度變得很慢，就覺得這個 model 參數卡在 local minimum 之類的，就傷心地把程式停掉了。此時你得到的結果其實是很差的，為什麼呢？因為這個收斂的狀態幾乎基於 random 的參數，所以得到的結果其實是很差的。
+
+為甚麼會有這個現象發生呢？如果 Backpropagation 的式子寫出來的話便可以很輕易地發現 sigmoid function 會導致這種情況發生。但是就算不看 Backpropagation 的式子，從直覺上來想也可以了解為什麼這種情況會發生。用直覺來想，一個參數的 Gradient 的值應該是某一個參數 w 對 total cost C 的偏微分。也就是說，它直覺上的意思就是當我把某一個參數做小小的變化時，它對這個 cost 的影響。我們可以把一個參數做小小的變化，然後觀察它對 cost 的變化，而藉此來決定這個參數的 Gradient 的值有多大。
+
+所以我們就把第一個 layer 裡面的某一個參數加上 Delta w，看看對 network 的 output 和 target 之間的 loss 有甚麼樣的影響。你會發現，如果今天這個 Delta w 很大，在通過 sigmoid function 的時候是會變小的。也就是說，改變了某一個參數的 weight，對某一個 neuron 的 output 的值會有影響，但是這個影響會衰減。因為，假設用 sigmoid function，它的形狀長的如下圖：
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/23637c6e-76df-464a-97cb-df884e54272b)
+
+sigmoid function 會把負無窮大到正無窮大之間的值都硬壓到 0~1 之間。也就是說，如果有很大的 input 的變化，在通過 sigmoid function 以後，它對 output 的變化會很小。所以，就算今天這個 Delta w 有很大的變化，造成 sigmoid function 的 input 有很大的變化，對 sigmoid function 來說，它的 output 的變化是會衰減的。而每通過一次 sigmoid function，變化就衰減一次。所以當 network 越深，它衰減的次數就越多，直到最後，它對output 的影響是非常小的。換句話說，你在 input 的地方改一下你的參數，對它最後 output 的變化，其實是很小的，因此最後對 cost 的影響也很小。這樣會導致靠近 input 的那些 weight，它對 Gradient 的影響是小的。
+
+梯度消失（Vanishing Gradient）的原因，1.导数的范围：在深层网络中，每层的梯度都依赖于前一层的梯度。当你使用 Sigmoid 函数时，每通过一层，梯度就可能被缩小，最终可能变得非常小，以至于在网络的较低层几乎没有有效的梯度传递，这就是梯度消失问题。2.网络深度：
+随着网络层的增加，连续乘以小于 1 的数会使梯度指数级减小。这意味着网络中更深的层在训练过程中几乎不会更新权重，从而难以学习。
+
+虽然合理的初始化（比如 He 或 Xavier 初始化）可以在一定程度上帮助缓解梯度消失的问题，但它们并不能完全解决由 Sigmoid 激活函数引起的根本问题。良好的初始值可以帮助梯度在训练初期保持有效的范围，但随着训练的深入，梯度消失的问题可能仍会出现，特别是在非常深的网络中。
+
+解决方案：
+
+1.使用 ReLU 及其变体：ReLU 激活函数及其变体（如 Leaky ReLU、Parametric ReLU）在正区间内的梯度是常数（通常为1），这帮助避免了在正输入值下的梯度消失问题。
+
+2.批量归一化（Batch Normalization）：这种方法可以帮助调节各层的输入，使其保持在激活函数的线性区域，从而有助于缓解梯度消失问题。
+
+3.更加谨慎的网络设计：避免过深的网络，或者使用跳跃连接（如在残差网络中）来保持梯度流。
+
+以下就介绍第一种方法 ReLU 
+比較早年的做法是去訓練 RBM，去做 layer-wise 的 training。也就是說，先訓練好一個 layer。因為如果把所有的這個 network 兜起來，那在做 Backpropagation 的時候，第一個 layer 幾乎沒有辦法被訓練到。所以，RBM 的精神就是：先把一個 layer train 好之後，再 train 第二個，再 train 第三個。最後在做 Backpropagation 的時候，雖然第一個 layer 幾乎沒有被 train 到也所謂，因為一開始在 pre-train 的時候，就把它 pre-train 好了。以上就是 RBM pre-train 為什麼可能有用的原因。
+
+後來 Hinton 跟 Pengel 都幾乎在同樣的時間，不約而同地提出同樣的想法：改一下 activation function，可能就可以解決這個問題了。所以，現在比較常用的 activation function，叫做 Rectified Linear Unit，它的縮寫是 ReLU。這個 activation function 的函數圖形如下圖：
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/dc3f26de-1daa-4850-b1f1-754f9d0e4bac)
+
+其中 z 是 activation function 的 input，a 是 activation function 的 output。如果 activation function 的 input 大於 0，input 就會等於 output；如果 activation function 的 input 小於 0，output 就是 0。
+
+選擇這樣的 activation function 有甚麼好處呢？有以下幾個理由：第一個理由是它比較快，跟 sigmoid function 比起來，它的運算是快很多的。sigmoid function 裡面的 exponential 運算是很慢的，使用這個方法快得多。Pengel 的原始論文有提到這個 activation function 的想法其實有一些生命上的理由，而他把這樣的 activation 跟一些生物上的觀察結合在一起。
+
+而 Hinton 則說過像 ReLU 這樣的 activation function 其實等同於無窮多的 sigmoid function 疊加的結果。那些無窮多的 sigmoid function 之中，它們的 bias 都不一樣，而疊加的結果會變成 ReLU 的 activation function。但它最重要的理由是它可以處理 Vanishing gradient 的問題。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/0b60fc38-547d-42ee-91ce-c993916a5df3)
+
