@@ -120,7 +120,7 @@ Stochastic Gradient Descent：黃色和綠色 z^1 依序和 W^1 做運算 Mini-b
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/a17b323f-c073-498a-be71-52202e027750)
 
-你可以参考Keras_helloworld_DNN.py 其中范例是参考台大Hung-yi Lee 老师课堂范例，另外我再添加实现N-fold cross Validation范例
+你可以参考Keras_helloworld_DNN.py 其中范例是参考台大Hung-yi Lee 老师课堂范例，另外我再添加实现N-fold cross Validation范例，可以看出做了N-fold效果会比没做的好，但这个范例是随手写，所以是没train好要改一下模型，必須回頭去檢查「定義 function set 和網路架構、決定 loss function、用 Gradient Descent 進行 optimization」，在這三個步驟之中是不是哪邊出了問題。
 
 
 如何知道自己的DNN出了什么问题以及如何有方向的改进，以下是来自于台大Hung-yi Lee 老师课程内容
@@ -158,5 +158,9 @@ Stochastic Gradient Descent：黃色和綠色 z^1 依序和 W^1 做運算 Mini-b
 但是就是會有很多的問題使得這個 network 沒有辦法做到。56 層的 network 比 20 層的差，並不是因為它能力不夠，因為它只要前 20 層都跟 20 層的一樣，後面都是 identity 明明就可以跟 20 層一樣好，但它卻沒有得到這樣的結果。所以說它的能力其實是足夠的，所以我認為這不是 underfitting，就只是沒有訓練好，而我還不知道有沒有名詞專門指稱這個問題。
 
 所以如果在 deep learning 的文獻上看到一個方法，永遠都必須要思考一下這個方法是要解決什麼樣的問題。因為在 deep learning 裡面有兩個問題：一個是 training set 上的表現不好，一個是 testing set 上的表現不好。當有一個方法被提出的時候，往往就是針對這兩個問題的其中一個處理。舉例來說，等一下會提到一個叫做 dropout 的方法。dropout 也許許多人或多或少都會知道，它是一個很有 deep learning 特色的方法。
+
+於是很多人就會說：「所以我今天只要看到 performance 不好，就可以決定要用 dropout。」但是，只要仔細思考一下 dropout 是甚麼時候用的，就會發現 dropout 是在 testing 的結果不好的時候才會使用的，而 testing data 結果好的時候是不會使用 dropout 的。所以如果今天問題是 training 的結果不好，而還是使用 dropout，只會越訓練越差而已。所以，不同的方法處理甚麼樣不同的問題，是必須要想清楚的。
+
+我們剛才提到 deep learning 的流程裡面，在訓練的時候有兩個問題。所以接下來我們會對這兩個問題分開來討論，介紹在遇到這兩個問題的時候，有什麼解決方法
 
 
