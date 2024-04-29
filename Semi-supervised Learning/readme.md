@@ -127,4 +127,4 @@ Definition of Smoothness of the Labels on the Graph
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/912620e6-7fee-4061-82b2-e5b2111feb49)
 
-
+在 Deep neural network，smoothness 可以放在神經網路的任何地方，可以把某一個 hidden layer 接出來再乘上一些別的 transform，讓它要是 smooth 的，也可以每一個 hidden layer 的輸出都要是 smooth 的，這些做法都是可以的。
