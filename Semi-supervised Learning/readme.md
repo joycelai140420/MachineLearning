@@ -53,3 +53,13 @@ Generative Model Supervised learning
 如果資料的分布情形如上圖所示，則之前 supervised 所得到的結果並不合理，實際的 covariance 應該要更接近圓圈的形狀，實際的 μ^2 應該在下方一點的位置，而非 labeled data ，那是因為 sample 偏差的結果，此外根據 unlabeled data，class 2 的 prior probability 應該是較大的。
 
 请参考其Generative Model Supervised learning.py范例
+
+Entropy-based Regularization
+
+另外一個方法考慮的是輸出結果的 distribution，期望在 unlabeled data 上能得到集中而非發散的分布，因為現在有著 low-density seperation 的假設。（非黑即白意味分类output要很集中）
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/81b979d5-7cea-4803-af53-598bed762f7a)
+
+
+
+
