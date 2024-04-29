@@ -56,9 +56,16 @@ Generative Model Supervised learning
 
 Entropy-based Regularization
 
-另外一個方法考慮的是輸出結果的 distribution，期望在 unlabeled data 上能得到集中而非發散的分布，因為現在有著 low-density seperation 的假設。（非黑即白意味分类output要很集中）
+另外一個方法考慮的是輸出結果的 distribution，期望在 unlabeled data 上能得到集中而非發散的分布，因為現在有著 low-density seperation 的假設。（非黑即白意味分类output要很集中，分布如下图的Good图示）
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/81b979d5-7cea-4803-af53-598bed762f7a)
+，
+根据bad的图，分布散得比较大，entropy比较大，我们希望在labeled data 要分类比较正确，希望在unlabeled data上output 、entropy要越小越好，所以根据这个假设，我希望labeled data的model的output跟正确的output，两个的距离要越近越好。用cross entropy来evaluate他们之间的距离。然后再unlabeled data的部分会加上他的output distribution的entropy且希望值越小越好。可以*上lambda来控制权重要偏向unlabeled da多一点还是labeled datalabeled data。
+
+请参考其Entropy-based Regularization.py范例
+
+
+
 
 
 
