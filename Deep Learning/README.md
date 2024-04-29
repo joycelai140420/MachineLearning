@@ -397,3 +397,85 @@ RMSProp 的主要改进在于其使用移动平均而非累积所有历史梯度
 
 所以理想上，假如知道 testing data 的 loss 的變化，我們應該停在不是 training set 的 loss 最小、而是 testing set 的 loss 最小的地方。在 train 的時候，不要一直 train 下去，可能 train 到中間這個地方的時候，就要停下來了。但是實際上，我們不知道 testing set，根本不知道 testing set 的 error 是甚麼。所以我們其實會用 validation set 來 verify 這件事情。這邊的 testing set，並不是指真正的 testing set。它指的是有 label data 的 testing set。比如說，如果你今天是在做作業的時候這邊的 testing set 可能指的是 Kaggle 上的 public set；或者是，你自己切出來的 validation set。但是我們不會知道真正的 testing set 的變化所以其實我們會用 validation set 模擬 testing set 來看甚麼時候是 validation set 的 loss 最小的時候，並且把 training 停下來。
 
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/55fee3b1-b822-4d3d-9781-295f63fc7133)
+
+那 Regularization 是甚麼呢？我們重新定義了那個我們要去 minimize 的 loss function。我們原來要 minimize 的 loss function 是 define 在你的 training data 上的，比如說要 minimize square error 或 minimize cross entropy。那在做 Regularization 的時候我們會加另外一個 Regularization 的 term，比如說，它可以是你的參數的 L2 norm。假設現在我們的參數 theta 裡面，它是一群參數，w_1, w_2 等等有一大堆的參數。那這個 theta 的 L2 norm 就是 model 裡面的每一個參數都取平方然後加起來，也就是這個 lVert theta rVert_2 。因為現在用 L2 norm 來做 Regularization，所以我們稱之為 L2 的 Regularization。
+
+我們之前有提過，在做 Regularization 的時候一般是不會考慮 bias 這項。因為加 Regularization 的目的是為了要讓我們的 function 更平滑，而 bias 通常跟 function 的平滑程度是沒有關係的。所以，通常在算 Regularization 的時候不會把 bias 考慮進來。
+
+Regularization是机器学习中用于减少模型过拟合的一种技术。过拟合是指模型在训练数据上表现出色，但在新的、未见过的数据上表现较差的现象。正则化通过添加额外的信息（通常是一种惩罚项）到损失函数中来抑制过度复杂的模型。
+
+为什么使用正则化可以改善模型表现？
+
+控制模型复杂度：正则化通过惩罚模型的复杂度（如权重的大小）来限制模型的自由度，这有助于避免过度拟合训练数据的详细噪声。
+
+提高泛化能力：通过防止模型过度依赖训练数据中的特定特征，正则化有助于提升模型在未见数据上的表现。
+
+避免学习过于极端的模型权重：在许多情况下，具有较小权重的模型更简单，对输入数据中的小变化不那么敏感，因此更稳定。
+
+L1正则化（Lasso Regularization）：
+将权重的绝对值的总和加到原来的损失函数上。因为是每一次减到固定值，所以通常遇到很大W时候也有可能训练出来的模型也有很大loss。
+
+优点：可以产生稀疏权重（许多权重为0），从而实现特征选择。
+
+缺点：可能不稳定，即小的数据变化可能导致生成的模型差异较大。
+
+L2正则化（Ridge Regularization）：
+将权重的平方和加到原来的损失函数上。因为是每一次乘上一个小于1的固定值，所以遇到很大W时候也会被压出小的loss。
+
+优点：通常会使学习过程更加平滑，减少数据随机性带来的影响。
+
+缺点：不会产生稀疏解，因为权重很少真正变成零。
+
+何时使用正则化最好？
+
+面对过拟合时：当训练误差远小于测试误差时，通常意味着模型过拟合。
+
+数据集较小：小数据集更容易过拟合，使用正则化可以帮助模型提高泛化性能。
+
+模型过于复杂：对于具有大量参数的复杂模型，尤其是深度神经网络，正则化是必需的。
+
+至于在设置 L2 正则化的系数时，选择合适的数值是一个需要仔细考虑的问题，因为它会直接影响模型的训练过程和最终性能。
+
+使用验证集调整
+
+使用一个独立的验证数据集来评估不同正则化系数的效果。可以选定一个系数的范围，并通过交叉验证来测试每个值的效果。
+
+较小的系数：如果正则化系数太小，可能无法有效防止过拟合。如果你看到训练误差远低于验证误差，可能需要增加正则化系数。
+
+较大的系数：如果正则化系数太大，可能导致模型欠拟合，即模型在训练数据上的表现也不佳。如果训练误差和验证误差都很高，应考虑减小正则化系数。
+
+观察学习曲线
+
+观察不同正则化值下的学习曲线（训练和验证误差）是非常有帮助的。理想的学习曲线应该显示训练误差和验证误差逐渐接近，并且两者都逐渐减小。
+
+在Keras中实现L2正则化非常简单，可以直接在层中添加正则化器：
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.regularizers import l2
+
+model.add(Dense(64, activation='relu', kernel_regularizer=l2(0.01)))
+
+但有见解是Regularization效果在DNN，没有比较好，不如Early Stopping，两者的目的都是为了参数不要离0太远，Early Stopping会比较好用。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/17037abb-a84a-429f-9b48-0807b77c7e8e)
+
+最後我們要介紹一下 dropout。我們先介紹 dropout 是怎麼做的，然後才說明為甚麼這樣做。dropout 是怎麼做的呢？它是這樣，在 training 的時候，每一次我們要 update 參數之前，我們都對每一個 neuron，包括 input layer 裡面的每一個 element 做 sampling，那這個 sampling 是決定這個 neuron 要不要被丟掉，每個 neuron 有 p 的機率會被丟掉。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/87c94f79-d189-4471-8aff-d42d84cf8665)
+
+那如果一個 neuron 被 sample 到要丟掉的時候，跟它相連的 weight也失去作用，所以就變上圖這樣。所以，做完這個 sample 以後，network 的 structure 就變瘦了，變得比較細長，然後再去 train 這個比較細長的 network。這邊要注意一下，所謂的 sampling 是每次 update 參數之前都要做一次，每一次 update 參數的時候 training 的那個 network structure 是不一樣的。當你在 training 使用 dropout 的時候，performance 會變差，因為本來如果你不要 dropout 好好的做的話，在 MNIST 上，可以把正確率做到 100%。但是如果加 dropout，因為神經元在 train 時有時候莫名其妙就會不見，所以你在 training 時有時候 performance 會變差，本來可以 train 到 100%，就會變成只剩下 98%。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/f1ecf3df-849a-47dd-b2f5-5ea1dc987ede)
+
+所以，當你加了 dropout 的時候，在 training 上會看到結果變差。dropout 它真正要做的事情是就是要讓 training 的結果變差，但是 testing 的結果是變好的。也就是說，如果你今天遇到的問題是 training 做得不夠好，你再加 dropout，就是越做越差那在 testing 的時候怎麼做呢？在 testing 的時候要注意兩件事：第一件事情就是 testing 的時候所有的 neuron 都要用，不做 dropout；另外一件事情是，假設在 training 時，dropout rate 是 p，那在 testing 的時候，所有 weight 都要乘 (1 - p%)。也就是說，假設現在 dropout rate 是 50%，在 training 時 learn 出來的 weight 等於 1，那 testing 的時候，你要把那個 weight 設成 0.5。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/d6f59f26-d136-4dea-9eef-18c1ea4d5eee)
+
+另外想解釋的就是為甚麼 dropout rate 50% 的時候，testing 的 weight 就要乘 0.5？為甚麼 training 跟 testing 的 weight 是不一樣的呢？因為照理說 training 用甚麼 weight 就要用在 testing 上，training 跟 testing 的時候居然是用不同的 weight，為甚麼這樣呢？直覺的理由是：假設現在 dropout rate 是 50%，那在 training 的時候期望總是會丟掉一半的 neuron。對每一個 neuron 來說，總是期望說它有一半的 neuron 是不見的，是沒有 input 的。所以假設在這個情況下，learn 好一組 weight，但是在 testing 的時候，是沒有 dropout 的。對同一組 weight 來說，假如你在這邊用這組 weight 得到 z，跟在這邊用這組 weight 得到 z'，它們得到的值，其實是會差兩倍。因為在左邊這個情況下，總是會有一半的 input 不見；在右邊這個情況下，所有的 input 都會在。而用同一組 weight 的話，變成 z'就是 z 的兩倍了，這樣變成 training 跟 testing 不 match，performance 反而會變差。所以把所有 weight 都乘 0.5，做一下 normalization，這樣 z 就會等於 z'。把這個 weight 乘上一個值以後，反而會讓 training 跟 testing 是比較 match 的。這個是比較直觀上的結果，如果要更正式的話，其實 dropout 有很多理由。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/c2756978-3975-446e-b862-d8fbc64146e1)
+
+![Uploading image.png…]()
+
+
+前面Keras_optimization_helloworld_DNN.py有使用到dropout可以参考。
