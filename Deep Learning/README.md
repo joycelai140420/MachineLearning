@@ -475,7 +475,7 @@ model.add(Dense(64, activation='relu', kernel_regularizer=l2(0.01)))
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/c2756978-3975-446e-b862-d8fbc64146e1)
 
-![Uploading image.png…]()
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/1151a52a-e994-4220-8aa0-f83864d34bde)
 
 
 前面Keras_optimization_helloworld_DNN.py有使用到dropout可以参考。
