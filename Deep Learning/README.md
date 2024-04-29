@@ -1,4 +1,4 @@
-首先这篇很长，等我有空在分门别类...
+首先这篇很长，实在是台大老师讲的重点太多，等我有空在分门别类...
 
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/3dda1b36-5e31-4bcc-8bdf-3d4ddd29602a)DNN初探笔记
@@ -383,3 +383,17 @@ RMSProp 的主要改进在于其使用移动平均而非累积所有历史梯度
 在实践中，选择动量的具体值通常需要基于经验和实验。在开始时使用标准值（如 0.9）是一个合理的起点。随后，根据模型在验证集上的表现进行调整：如果模型训练过程中表现出振荡或更新过快，可以尝试降低动量值；如果训练过程缓慢，可以尝试增加动量值。此外，也可以通过交叉验证等技术来找到最优的动量设置。
 
 你可以参考Momentum.py范例来了解运作逻辑。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/6c127be7-1303-4851-b3ab-ad3edabf7cc5)
+
+我們剛才所討論的都是如果在 training data 上的結果不好的話怎麼辦。接下來要討論的則是如果今天已經在 training data 上得到夠好的結果，但是在 testing data 上的結果仍然不好，那有甚麼可行的方法。接下來會很快介紹 3 個方法：Early Stopping、Regularization 跟 Dropout。Early Stopping 跟 Regularization 是很 typical 的作法，他們不是 specific design for deep learning 的，是一個很傳統、typical 的作法。而 Dropout 是一個滿有 deep learning 特色的做法，在介紹 deep learning 的時候，需要討論一下。在前面几个py范例都有引用Early Stopping做法来提供参考。发现在添加Early Stopping也可以避免等太久。如果观察到训练准确率持续提高而验证准确率开始下降，可能是过拟合的标志。使用早停（Early Stopping）策略可以在验证损失不再改善时自动停止训练。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/0d04f816-eadf-49eb-bc8b-6a88bcb017df)
+其实Adam 就是RMSProp+Momentum
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/a9c474c6-f3d7-460e-bfc2-e894c5ba85f9)
+
+首先我們來介紹一下 Early Stopping，Early Stopping 是甚麼意思呢？我們知道，隨著你的 training，如果learning rate 調的對的話，total loss 通常會越來越小；那如果 rate 沒有設好，loss 變大也是有可能的。想像一下如果 learning rate 調的很好的話，那在 training set 上的 loss 應該是逐漸變小的。但是因為 training set 跟 testing set 他們的 distribution 並不完全一樣，所以有可能當 training 的 loss 逐漸減小的時候，testing data 的 loss 卻反而上升了。
+
+所以理想上，假如知道 testing data 的 loss 的變化，我們應該停在不是 training set 的 loss 最小、而是 testing set 的 loss 最小的地方。在 train 的時候，不要一直 train 下去，可能 train 到中間這個地方的時候，就要停下來了。但是實際上，我們不知道 testing set，根本不知道 testing set 的 error 是甚麼。所以我們其實會用 validation set 來 verify 這件事情。這邊的 testing set，並不是指真正的 testing set。它指的是有 label data 的 testing set。比如說，如果你今天是在做作業的時候這邊的 testing set 可能指的是 Kaggle 上的 public set；或者是，你自己切出來的 validation set。但是我們不會知道真正的 testing set 的變化所以其實我們會用 validation set 模擬 testing set 來看甚麼時候是 validation set 的 loss 最小的時候，並且把 training 停下來。
+
