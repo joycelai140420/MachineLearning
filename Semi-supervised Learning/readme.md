@@ -64,9 +64,58 @@ Entropy-based Regularization
 
 请参考其Entropy-based Regularization.py范例
 
+Semi-supervised SVM
+SVM 的運作方式就是在兩個 class 的 data 中，找一個邊界 (margin) 最大的分隔線 (boundry)，讓這兩個 class 的資料分的越開越好，與此同時，它也要有最小的分類的錯誤。
 
+在有一些 unlabeled data 的清況下，Semi-supervised SVM 的做法是窮舉所有可能的 label，接著對每一個可能的結果，都用 SVM 來訓練一個模型，最後，再去檢查哪一個 unlabeled data 的可能性在窮舉所有的可能的 label 裡面，可以讓邊界最大、同時又最小化 error。（如下圖）
 
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/886d648a-c5cd-4b45-96e7-fbc4f16c5d0f)
 
+窮舉所有 unlabeled data 的 label 直覺上會讓計算量爆炸到不可行的程度，例如有一萬筆 unlabeled data ，就需要窮舉 2 的一萬次方，根本毫無可能，於是上圖 reference 的 paper 就提出了一個很近似的方法。Thorsten Joachims 提出了一种称为 TSVM（Transductive Support Vector Machines）的半监督学习方法，也被称为 TSVM 或 S3VM，用于处理同时有标记和未标记数据的情况。基本精神是是你一開始先得到一些 label，然後每次改一筆 unlabeled data 的 label，看看能否讓 objective function 變大，如果變大就繼續用這個 label。
 
+Smoothness Assumption（近朱则赤，近墨则黑）
 
+在半监督学习中，平滑性假设（Smoothness Assumption）是指如果两个样本在特征空间中是接近的，那么它们对应的输出标签也应该是相似的。在这个假设下，我们可以利用未标记数据的分布来预测它们的标签，进而增强学习算法的性能。
 
+這個假設簡單來說就是：如果 x 是像的，那它們的 label y 也就像，這個假設聽起來沒有甚麼，而且這麼講這個假設其實是不精確的，因為一個正常的 model 如果它不是很深的話，一個接近的 input，自然會有接近的 output。
+
+這麼說仍有些難懂，以下圖為例：雖然 x^2, x^3 在距離上是接近的，但由於 x^1, x^2 在同一個密度高的區域裡，因此在 Smoothness assumption 下，x^1, x^2 有更高的機率是同一個 label。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/f4c25100-6ddf-41de-b53b-6d8787ebce97)
+
+這個方法在文件分類上可能非常有用。假設你現在要分天文學跟旅遊的文章，那天文學的文章有它固定的 word distribution，像是會出現 asteroid, bright，而旅遊的文章會出現 yellow stone 等等。如果今天你的 unlabeled data 跟你的 labeled data 是有重疊的，那很容易處理這個問題，但是在真實的情況下， unlabeled data 跟 labeled data 中間可能沒有任何重疊的 word，因為一篇文章的篇幅往往有限。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/54f46606-4023-4cd7-b359-d9a9f9d5001e)
+
+這種情形下，如果收集到夠多的 unlabeled data，就可以說 d1 跟 d5 相近，d5 又跟 d6 像，就可以一路 propagate 過去。
+
+Cluster and then Label
+實踐 Smoothness assumption 最簡單的做法是 Cluster and then label，這個方法太簡單以至於沒什麼可以談的。做法是先將資料做分群 (clustering)，接著看各個 cluster 中哪個 label 的數量最多，便將該 cluster 的 unlabeled data 視作該個 label，最後拿這樣的資料去做訓練。
+
+這個方法會發揮作用的假設就是你可以把同一個 class 的東西 cluster 在一起，可是在圖片裡面要把同一個 class 的東西 cluster 在一起其實是沒那麼容易的，像是以前在講為甚麼要用 deep learning 的時候，提過不同 class 可能會長得很像、同一個 class 可能會長得很不像。
+
+教授在此提及了用 Deep autoencoder 再做 Cluster and the label，但尚未教到 Deep autoencoder，因此先略過不提。
+
+在半监督学习中，平滑性假设（Smoothness Assumption）是一个普遍的假设，它认为在高密度区域的决策边界应该是平滑的，而不是在低密度区域。换句话说，如果两个样本在特征空间中彼此非常接近，它们很可能属于同一个类别。
+
+Graph-based Approach
+
+用 Graph 來表達也就是說，要想辦法資料點之間的 edge 建出來，有了這個 graph 以後，所謂的 high density path 的意思就是兩個點在這個 graph 上面是相連的，走得到的就是同一個 class。
+
+怎麼建一個 graph 呢？
+
+有些時候是很自然就可以得到，假設現在要做的是網頁的分類，而你有記錄網頁有網頁之間的 hyperlink，這就很自然地表示了網頁間是如何連結的；或者現在要做的是論文的分類，而論文和論文之間有引用的關係，這個關係式也是另外一種 graph 的 edge。
+
+當然有時候，你需要自己想辦法建 graph，而 graph 的好壞對結果影響是非常大。不過這就非常的 heuristic （憑經驗），藉由經驗和直覺去選擇比較好的做法。
+
+通常的做法是如此的：先定義兩個 object 之間怎麼算它們的相似度（例如影像就適合用 autoencoder 抽出來的 feature 算相似度），算完相似度以後就可以建 graph 了。
+
+建 Graph 的方法有很多種：
+
+K nearest Neighbor 假設令 k = 3，每一個 point 都跟它最近的、相似度最像的 3 個點做相連。
+e-Neighborhood 每一個點只有跟它相似度超過某一個 threshold e 的那些點做相連
+
+所謂的 edge 也不是只有相連和不相連這樣二元的選擇而已，edge 可以擁有 weight 來表示被連接起來的兩個點之間的相似度。建議比較好的選擇是用RBM Function 來計算相似度
+![1714397527416](https://github.com/joycelai140420/MachineLearning/assets/167413809/58ecb8a5-afc2-48c3-b72e-f01b066e121c)
+
+所以 graph-based 方法的精神是，假設有兩筆資料點是屬於 class 1，和他相鄰的點是 class 1 的機率也會上升，而這個機率會在圖上連通的區域傳遞下去。因此使用 graph-based 的方法需要有足夠的資料量，要是資料量不夠大，便有可能發生 label 無法 propagate 下去的可能。
