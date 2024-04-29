@@ -84,3 +84,39 @@ filter 移動到下一格，得 -1，亦即另外一個 neuron 的 output 為 -1
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/da06520c-72fa-4d37-b636-233b90f2d1b2)
 
+Part 2 - Max Pooling
+
+根據 Filter 1, Filter 2，我們可以得到兩個 4*4 的 matrix
+
+將他們 4 個一組（如下圖），接著每組中選出一個數（可選平均、最大值......自行定義）
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/a8c84889-8a03-46c7-bab8-2b0d25fe7732)
+
+這裡，我們選最大值，故做完一次 Convolution + Max Pooling
+
+我們將原來 6*6 的圖像化簡成一個 2*2 的圖像
+
+Filter1=[ 3 0
+         3 1 ]
+              
+Filter1=[ -1 1
+          0  3 ] 
+
+
+image 深度(維度)：由「filter 個數」決定
+
+例：這裡只有 Filter 1 及Filter 2，故右下圖中的維度就是 2
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/4ca73371-3718-4a66-a295-e43787e7b287)
+
+反覆「Convolution + Max Pooling」的動作 我們可以重複「Convolution + Max Pooling」的動作，讓 image 越來越小
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/2e15160a-0b89-425a-ae28-b1f2df54f14d)
+
+
+Part 3 - Flatten
+將 Feature Map 拉直，丟到一個 Fully Connected Feedforward Network 中，就結束了
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/ce0356f1-233b-4d0b-828e-67e5c823cdde)
+
+
+
