@@ -119,3 +119,12 @@ e-Neighborhood 每一個點只有跟它相似度超過某一個 threshold e 的�
 ![1714397527416](https://github.com/joycelai140420/MachineLearning/assets/167413809/58ecb8a5-afc2-48c3-b72e-f01b066e121c)
 
 所以 graph-based 方法的精神是，假設有兩筆資料點是屬於 class 1，和他相鄰的點是 class 1 的機率也會上升，而這個機率會在圖上連通的區域傳遞下去。因此使用 graph-based 的方法需要有足夠的資料量，要是資料量不夠大，便有可能發生 label 無法 propagate 下去的可能。
+
+Definition of Smoothness of the Labels on the Graph
+![1714397527416](https://github.com/joycelai140420/MachineLearning/assets/167413809/10e58051-9b97-4e3c-b1ff-6f27524ba7cf)
+
+接下來要定義在 Graph-based 的方法下，label 有多符合 Smoothness assumption 這個假設，是加總所有的 data pair 的相似度乘上他們 label 的差異，數值越小代表越 smooth（舉例如下圖）。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/912620e6-7fee-4061-82b2-e5b2111feb49)
+
+
