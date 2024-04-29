@@ -477,5 +477,22 @@ model.add(Dense(64, activation='relu', kernel_regularizer=l2(0.01)))
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/1151a52a-e994-4220-8aa0-f83864d34bde)
 
+dropout 還是一個可以探討的問題，在文獻上找到很多不同的觀點來解釋為甚麼 dropout 會 work。那我覺得我比較能接受的是 dropout 是一種終極的 ensemble 的方法。甚麼是 ensemble 的方法呢？ensemble 的方法在比賽的時候常用，意思是說我們有一個很大的 training set，每次從 training set 裡面只 sample 一部分的 data 出來。記得我們在說明 bias 跟 variance 的 trade off 的時候有說過，打靶有兩種狀況，一種是你的 bias 大，所以你打不準一種是你的 variance 很大，所以你打得準。如果今天有一個很複雜很笨重、很大的 model 的時候，它往往是 bias 準，但 variance 很大。但是，如果你這個笨重的 model 有很多個雖然它 variance 很大，最後平均起來結果就很準。所以今天 ensemble 做的事情，其實就是要利用這個特性：我們把原來的 training data 裡面 sample 出很多 subset，然後 train 很多個 model，每一個 model 甚至可以是 structure 不一樣。雖然說，每一個 model 他們可能 variance 很大，但是如果他們都是很複雜的 model 的時候，平均起來這個 bias 就很小。所以你 train 了一把 model，然後在 testing 的時候丟一筆 training data 進來，它通過所有的 model 得到一大堆的結果，再把這一大堆的結果平均起來當作我們最後的結果。如果你的 model 很複雜的話，這一招往往有用。random forest 也是實踐這個精神的一個方法。如果你用一個 decision tree，它就很弱，胡亂做它就會 overfitting，那如果你用 random forest 就沒有那麼容易 overfitting。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/36fdec2a-c6ca-47b9-86c0-68c2d7b7b67e)
+
+那為甚麼說 dropout 是一個終極的 ensemble 的方法呢？我們知道在做 dropout 的時候，我們每一次要 update 參數的時候就拿一個 minibatch 出來，要 update 參數的時候都會做一次 sample。所以，你拿第一個 minibatch 的時候，你 train 的 network 長得像第一張圖；你拿第二個 minibatch 的時候，你 train 的 network 可能長得像第二張圖；你拿第三個長得像第三張，你拿第四個長得像第四張。所以 dropout 等於是一個終極的 ensemble 的方式。假設你有 M 個 neuron，每一個 neuron 可以 drop 或不 drop，所以你可能的 neuron 的數目有 2^M 個。當你在做 dropout 的時候，你等於是在 train 這 2^M 個 neuron。你每次都只用一個 minibatch 的 data 去 train 一個 network，你可能就用這個 minibatch 裡面的 100 筆 data 去 train 這些 network，總共有 2^M 個可能的 network。當然因為你最後 update 的次數是有限的，你可能沒有辦法把 2^M 個 network 每個都 train 一遍。但是你可能就 train 了好多好多的參數，好多好多的 network。你有做幾次 update 參數，你就 train 幾次 network。但是每個 network 就只用一個 batch 來 train，這可能會讓人覺得很不安：一個 batch 才 100 筆 data，怎麼 train 一個 network 呢。沒有關係，因為這些不同的 network 之間的參數是 shared，也就是說這一個 network 的這一個參數就是這個 network 的這個參數，就是圖上的這 4 個同位置的參數其實是同一個參數。所以雖然說一個 network 的 structure，它只用一個 batch train，但是一個 weight，它可能用好多個 batch 來 train。比如說，這個 weight，它在這 4 個 batch 做 dropout 的時候，都沒有把這個 weight 丟掉。那這個 weight，就是拿這 4 個 batch 合起來 train 的結果。所以，當你做 dropout 的時候，你就是 train 了一大把的 network structure。
+
+理論上，每一次 update 參數的時候，你都 train 了一個 network 出來。那 testing 的時候呢？按照 ensemble 這個方法的邏輯應該就是，你把那一大把的 network 通通拿出來，然後你把 testing data 丟到那一把 network 裡面去，每一個 network 都給你吐一個結果，然後把所有的結果平均起來就是最終的結果。但是，在實作上你沒辦法這麼做，因為這一把 network 實在太多了，你沒有辦法每一個都丟一個 input 進去去看看它 output 是什麼，再平均起來，這樣運算量太大。所以 dropout 最神奇的地方是告訴你：當你把一個完整的 network 不做 dropout，但是把它的 weight 乘上 (1 - p%)，然後把 training data 丟進去得到它的 output 的時候，這個 ensemble 的結果，跟把 weight 乘上 (1 - p%) 的結果，是可以 approximate 的。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/1e673487-9710-48e4-affc-c70e4a4a818b)
+
+何以見得呢？我們舉一個例子。我們來 train 一個很簡單的 network，它就只有一個 neuron。它的 activation function 是 linear 的，不考慮 bias。這邊有一個 neuron，它的 input 是 x_1, x_2，經過 dropout training 以後算出來的 weight 是 w_1, w_2，所以它的 output 就是 w_1x_1 + w_2x_2。這邊 neuron 沒有 activation function 或 activation function 是 linear 的。
+
+我們做 dropout 的時候，不會 drop 那個 output 的 neuron，只會 drop hidden layer 跟 input 的 neuron。那這邊每一個 neuron，它可以被 drop 或不被 drop，所以我們總共有 4 種 structure：一個是通通沒被 drop、一個是 drop x_1、一個是 drop x_2, 一個是 x_1, x_2 都被 drop 掉。假設你 input x_1, x_2，左上角 network 給我們的就是w_1x_1 + w_2x_2。同樣的 input，但是 x_1 被 drop 掉，得到的 output 是 w_2x_2，左下角是 w_1x_1，右下角的 output 是 0。我們要做 ensemble，所以要把這 4 個 network 的 output 通通都 average 起來。這邊有 4 個值，然後 w_1x_1 出現兩次、w_2x_2 出現兩次，所以得到的結果是 dfrac{1}{2}w_1x_1+dfrac{1}{2}w_2x_2。我們現在把這兩個 weight 都乘 dfrac{1}{2} ，也就是把 w_1 乘 dfrac{1}{2}、把 w_2 乘 dfrac{1}{2}，同樣 input x_1, x_2，得到的 output 也同樣是 dfrac{1}{2}w_1x_1+dfrac{1}{2}w_2x_2。所以，這邊想要呈現的是，在這個最簡單的 case 裡面用不同的 network structure 做 ensemble 這件事情，跟我們把 weight multiply 一個值而不做 ensemble 所得到的 output，其實是一樣的。
+
+你可能會說，這個例子這麼簡單，所以這個例子上會 work，也是很直覺的。大概小學生都知道，這個是 equivalent。但是假如說，activation function 是 sigmoid function；或是它是很多個 layer，它還會 work 嗎？結論就是不會 equivalent，只有是 linear 的 network ensemble 才會等於 multiply 一個 weight。左邊跟右邊要相等的前提是你的 network 要是 linear 的。但是 network 不是 linear 的，所以他們其實不 equivalent。
+
+這個就是 dropout 最後一個很神奇的地方，雖然不 equivalent，但是最後結果還是會 work。所以根據這個結論，有一個想法是說：既然 dropout 在 linear 的 network 上，ensemble 才會等於乘一個 weight。所以今天如果 network 很接近 linear 的話，應該 dropout performance 會比較好，比如說用 ReLU，或者用 Maxout network，相對於 sigmoid，他們是很接近 linear 的。所以 dropout 確實在用 ReLU 或 Maxout network 的時候，它的 performance 是確實比較好的。如果去看 Maxout network 的論文的話，它裡面也有提到這一點，它的Maxout 跟 dropout 加起來的記錄量是比 sigmoid function 還要大的，這也是作者相當自豪的一點。
 
 前面Keras_optimization_helloworld_DNN.py有使用到dropout可以参考。
