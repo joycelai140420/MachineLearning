@@ -195,4 +195,10 @@ w 跟 x 是高維空間中的一個點，w^1 是高維空間中的一個 vector�
 
 如果我們要用 equation 來表示它的話，就會說現在要去 maximize 的對象是 z1 的 variance，z1 的 variance 就是 summation over 所有的 z1 (z1 - z1\bar) 的平方，z1\bar 就是做 z1 的平均。
 
+在无监督学习中，主成分分析（PCA）是一种常用的数据降维技术。它通过正交变换将可能相关的变量转换为一组线性不相关的变量（主成分），目的是保留数据中的大部分变异性，同时减少维度。
+
+与 K-means 聚类不同，PCA 主要用于探索数据、降低数据维度以及在处理高维数据时发现模式。在 PCA 中我们可以通过计算重构误差来衡量降维的影响。Python 和 scikit-learn 实现 PCA 并应用于 Iris 数据集的示例。
+
 请参考PCA.py 其中一个是使用sklearn toolkit范例，一个是用numpy 来深入了解其算法运作原理。
+
+
