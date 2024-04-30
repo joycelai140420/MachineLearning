@@ -179,4 +179,20 @@ Principle Component Analysis
 
 根據一大堆的 x，我們要把這個 W 找出來。
 
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/b3e1a7b8-501f-4fca-9616-c4069d54819f)
+
+PCA 要做的事情就是找這一個 W。
+
+假設現在考慮一個 one dimensional 的 case，只要把 data project 到一維的空間上面，也就是 z 只是一個一維的 vector，也就是一個 scalar，那 W 其實就是一個一個 row ，用 w^1 來表示。
+
+把 x 跟 w 的第一個 row, w^1做 inner product，就能得到一個 scalar, z1。
+假設 w^1 的長度是 1，w^1 的 2-norm 是 1。
+w 跟 x 是高維空間中的一個點，w^1 是高維空間中的一個 vector，那所謂的 z1 就是 x在 w^1 上面的投影，這個投影的值就是 w^1 跟 x 的 inner product。現在要做的事情就是把一堆 x透過 w^1 把它投影變成 z1。
+
+則現在的目標是希望選一個 w^1經過 projection 以後，得到的這些 z1 的分布是越大越好（也就是說，我們不希望通過這個 projection 以後，所有的點通通擠在一起把本來 data point 和 data point 之間的奇異度拿掉了）。
+
+所以，我們希望找一個 projection 的方向，它可以讓projection 後的 variance 越大越好。
+
+如果我們要用 equation 來表示它的話，就會說現在要去 maximize 的對象是 z1 的 variance，z1 的 variance 就是 summation over 所有的 z1 (z1 - z1\bar) 的平方，z1\bar 就是做 z1 的平均。
+
 请参考PCA.py 其中一个是使用sklearn toolkit范例，一个是用numpy 来深入了解其算法运作原理。
