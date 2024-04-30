@@ -238,3 +238,8 @@ Matrix Factorization（矩阵分解）
 过拟合风险：模型可能会过度拟合训练数据，尤其是在参数过多时。
 
 请参考Matrix Factorization SVD.py
+
+以下是还没教过PCA可以参考
+
+![1714446099993](https://github.com/joycelai140420/MachineLearning/assets/167413809/f8ad7b8a-3d57-44cc-ad15-14bb6bf1544c)
+
