@@ -199,6 +199,6 @@ w 跟 x 是高維空間中的一個點，w^1 是高維空間中的一個 vector�
 
 与 K-means 聚类不同，PCA 主要用于探索数据、降低数据维度以及在处理高维数据时发现模式。在 PCA 中我们可以通过计算重构误差来衡量降维的影响。Python 和 scikit-learn 实现 PCA 并应用于 Iris 数据集的示例。
 
-请参考PCA.py 其中一个是使用sklearn toolkit范例，一个是用numpy 来深入了解其算法运作原理。
+请参考PCA.py 其中一个是使用sklearn toolkit范例，一个是用numpy 结合SVD方式进行降维来深入了解其算法运作原理。
 
 
