@@ -135,5 +135,48 @@ HAC不直接決定幾個 cluster，而決定你要在樹上切幾刀。
 Dimension Reduction
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/a769d16e-bff6-4482-81cd-faa3816e4627)
 
-![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/2c42f2ee-9749-44c6-bb99-258eaa7491ce)
+在做 cluster 的時候，就是以偏概全，因為每一個 object都必須要屬於某一個 cluster。
 
+如果你只是把你手上所有的 object分別 assign 到它屬於哪一個 cluster，這樣是以偏概全。
+
+應該要用一個 vector來表示 object，這個 vector裡面的每一個 dimension，代表了某一種特質、某一種 attribute。這件事情就叫做 Distributed 的 representation。
+
+如果原來的 object 是一個非常 high dimension 的東西，比如說 image。
+
+它用它的attribute，把它用它的特質來描述，就會從比較高維的空間變成比較低維的空間，這一件事情就叫做 Dimension Reduction。
+
+實際舉例，其實只需要在 2D 的空間就可以描述這個 3D 的 information，根本不需要把這個問題放到 3D 來解，這樣是把問題複雜化。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/b6fa2dce-a640-46d9-bb89-2123acaa429a)
+
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/884fefff-1e17-4975-8f4c-ac8e12ebcc47)
+
+另一個比較具體的例子， MNIST
+
+在 MNIST 裡面，每一個 input 的 digit都是一個 image，都用 28*28 的 dimension來描述。
+
+但是，實際上多數 28*28 的 dimension 的 vector轉成一個 image看起來都不像是一個數字。所以在這個 28維 * 28維的空間裡面是 digit 的 vector，其實是很少的。所以，其實描述一個 digit，或許根本不需要用到 28*28 維。
+
+比如這邊有一堆 3，然後這一堆 3
+
+如果你是從 pixel 來看待它的話要用 28維 * 28維。然而，實際上這一些 3，只需要用一個維度，就可以來表示。因為這些 3 就只是說把原來的 3 放正，是中間這張 image右轉 10 度轉就變成它，右轉20度就變它，左轉10度變它，左轉20度就變它。
+
+所以，唯一需要記錄的事情只有今天這張 image，它是左轉多少度、右轉多少度，就可以知道說，它在 28 維的空間裡面應該長什麼樣子。
+
+Dimension Reductiong實作
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/e0db75d3-4ec5-49b1-89eb-402d9bfcae2e)
+
+找一個 function，function 的 input 是一個 vector, x，它的 output 是另外一個 vector, z。
+因為是 Dimension Reduction，所以 output 的這個 vector, z，它的 dimension 要比 input 的 x 還要小。
+Feature Selection
+最簡單的方法是 Feature Selection，如果把 data 的分布拿出來看一下，本來在二維的平面，但是，你發現都集中在 x2 的 dimension 而已，所以，x1 這個 dimension 沒什麼用，把它拿掉，就等於是做到 Dimension Reduction 這件事。
+
+Principle Component Analysis
+另外一個常見的方法叫做Principle Component Analysis (PCA)。
+
+假設這個 function 是一個的 linear function，則 input, x 跟這個 output, z 之間的關係就是一個 linear 的 transform。也就是把這個 x 乘上一個 matrix, W，就能得到它的 output, z。
+
+根據一大堆的 x，我們要把這個 W 找出來。
+
+请参考PCA.py 其中一个是使用sklearn toolkit范例，一个是用numpy 来深入了解其算法运作原理。
