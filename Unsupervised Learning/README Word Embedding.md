@@ -230,3 +230,46 @@ given 中間的 word，我們要去 predict 它的周圍
 
 你可以参考范例Skip-gram.py
 
+Multi-lingual Embedding
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/906288bc-1492-4ccb-839b-6708ee9326d0)
+
+那 word vector 還可以做很多其他的事情，可以把不同的語言的 word vector拉在一起，
+
+如果今天有一個中文的 corpus，和一個英文的 corpus，各自去、分別去 train 一組 word vector。則中文跟英文的 word vector是完全沒有任何的關係的。因為你要 train word vector 的時候，憑藉的就是上下文之間的關係。所以，如果沒有中文跟英文的句子混雜在一起，machine 就沒有辦法判斷中文的詞彙跟英文的詞彙他們之間的關係。
+
+今天假如你已經事先知道某幾個中文的詞彙和某幾個英文的詞彙，它們是對應在一起的
+
+則先得到一組中文的 vector 再得到一組英文的 vector，可以再 learn 一個 model把中文和英文對應的詞彙。
+
+Ex. 知道 "加大" 對應到 "enlarge"，"下跌" 對應到 "fall" 把對應的詞彙，通過這個 projection 以後，把它們 project 在 space 上面的同一個點。
+
+接下來有新的中文的詞彙和新的英文的詞彙，你都可以用同樣的 projection把它們 project 到同一個 space 上面。
+
+Document Embedding
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/3f68da88-7643-4e11-8973-496893b1d27e)
+不只是把一個 word 變成一個 vector，也可以把一個 document 變成一個 vector。
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/a5e6f76c-9be2-4bfe-86a8-6d2eed17d171)
+就是把一個 document 變成一個 bag-of-word，然後，用 Auto-encoder learn 出這個 document 的 Semantic Embedding。
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/83e97ee8-11f1-4d04-bc88-07c8bc3e1742)
+
+但光用這個 word 來描述一篇 document是不夠的。
+
+因為詞彙的順序代表了很重要的含義。
+
+舉例來說，有兩個詞彙，有兩個句子
+
+一個是： white blood cells destroying an infection
+
+另外一個是：an infection destroying white blood cells
+
+這兩句話，如果看它的 bag-of-word 的話，它們的 bag-of-word 是一模一樣的。它們都有出現這 6 個詞彙，但是順序是不一樣的。
+
+雖然說，它們有同樣的 bag-of-word，它們在語意上，完全是不一樣的。所以，光只是用 bag-of-word 來描述 一篇 document 是非常不足的。
+
+用 bag-of-word 會失去很多重要的 information。
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/55ff47ba-ea91-4046-af43-1f3986e9ec05)
+
+這邊就列了 reference 給大家參考
+
+上面這 3 個方法，它是 unsupervised，也就是說你只要 collect一大堆 document就可以讓它自己去學。
+
