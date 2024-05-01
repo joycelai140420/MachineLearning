@@ -108,6 +108,15 @@ Can Auto-encoder solve word embedding?
 
 然而在這個地方，並沒有辦法用 Auto-encoder 來解
 
+ps:复习一下什么是Auto-encoder
+自动编码器（Auto-encoder）是一种神经网络，用于学习数据的有效表示（即编码），通常用于降维和特征学习。自动编码器通过无监督学习的方式来训练，其目标是使输出尽可能接近输入。
+通常由两部分组成：
+编码器（Encoder）：这部分网络负责将输入数据转换成一个较低维度的表示。这个表示通常被称为“编码”。
+解码器（Decoder）：解码器的任务是从低维的编码中重构出原始输入数据。
+
+你可以参考范例Auto-encoder.py，
+
+
 舉例來說：
 
 如果用 1-of-N encoding 當作它的 input，對 1-of-N encoding 來說，每一個詞彙都是 independent 的。這樣子的 vector 做 Auto-encoder，沒有辦法 learn 出任何 informative 的 information。就算用character 的 n-gram 來描述一個 word，也只可以抓到一些字首、字根的含義。所以基本上，現在大家並不是這麼做。
