@@ -1,7 +1,7 @@
 邻域嵌入（Neighbor Embedding）简介
 
 Neighbor Embedding是一种用于数据降维和可视化的无监督学习技术，它主要用于探索高维数据的内在结构。这类方法的目标是在保持数据中邻近点的局部结构的同时，将高维数据映射到低维空间。最著名的邻域嵌入方法之一是 t-SNE（t-distributed Stochastic Neighbor Embedding）。
-向台大老师这个图式如果用PCA就会像直接压扁的，无法把完整的S中的颜色有序排列。就需要Neighbor Embedding技术。
+向台大老师这个图式如果用PCA就会像直接压扁的，没办法向下图的右示例图，无法把完整的S中的颜色有序排列。就需要Neighbor Embedding技术。
 
 工作原理
 
@@ -39,3 +39,80 @@ Neighbor Embedding是一种用于数据降维和可视化的无监督学习技�
 结合其他技术：有时将邻域嵌入与其他降维技术（如 PCA）结合使用，可以先减少数据的维度再进行邻域嵌入，以提高效率和稳定性。
 
 以下是台大老师Hung-yi Lee授课内容
+
+Dimension Reduction
+「非線性」的降維
+
+在高維空間裡面的一個 Manifold
+
+Ex: 地球
+
+表面就是一個 Manifold
+塞到了一個三維的空間裡面
+Euclidean distance (歐式幾何) 只有在很近的距離的情況下才會成立
+Ex: 附圖之S形空間
+
+藍色區塊的點距離近 Rightarrow​ 他們比較像
+距離比較遠(ex: 藍色跟紅色) Rightarrow 無法直接以 Euclidean distance 計算相似度
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/f74e0777-7dcb-4241-96d6-8a5fd2dc8363)
+
+Manifold Learning
+把 S 形的這塊東西展開
+
+把塞在高維空間裡面的低維空間「攤平」，也就是降維
+
+Pros
+
+可以用 Euclidean distance 來計算點和點之間的距離
+對 clustering 有幫助
+對 supervised learning 也會有幫助
+
+Locally Linear Embedding (LLE)
+Setting
+本來有某一個點，叫做 x_i
+然後選出這個 x_i 的 k 個 neighbors
+假設其中一個叫做 x_j ，w_{ij} 代表 x_i 和 x_j 的關係
+表示所有的 k 個 neighbors Neighbor 之線性組合要跟 x_i 越像越好
+Minimize sum_i |x^i - sum_j w_{ij} x^j \_2
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/b74d8e6a-2516-4a91-9aa3-1679f5edb0ef)
+
+Dimension Reduction
+將所有的 x_i​ 跟 x_j​ 轉成 z_i​ 和 z_j​ ，而中間的關係 w_{ij}​ 是不變的
+首先 w_{ij} 在原來的 space 上面找完以後，就 fix 住
+沒有一個明確的 function 說怎麼做 dimension reduction
+憑空找出來降維後的 z_i 跟 z_j ，可能原本100維(x)，降到2維(z)
+Minimize sum_i |z^i - sum_j w_{ij} z^j |_2
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/b9d1623b-ca19-492e-9f6c-2959aa7fa802)
+
+Something about Numbers of Neighbors (k)
+neighbor 選的數目要剛剛好才會得到好的結果
+Reference paper: “Think Globally, Fit Locally”
+k 太小，就不太robust，表現不太好
+k 太大，會考慮到一些距離很遠的點，這些點被 transform 以後，relation 沒有辦法 keep 住
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/d7634f8f-b3ed-4118-be0d-f991dd86e1ca)
+
+
+请参考Locally Linear Embedding_LLE.py
+
+Laplacian Eigenmap
+考慮到先前提過的 Smoothness assumption
+
+只算它的 Euclidean distance 來比較點跟點之間的距離是不足夠的
+
+要看在這個 High density 的 region 之間的 distance
+
+有 high density 的 connection 才是真正的接近
+可以用 graph 描述
+Graph Construction
+
+計算 data point 兩兩之間的相似度，超過一個 thereshold 就 connect 起來
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/b1f013f6-3b72-41c1-b848-9991db9662f5)
+
+
+
+
