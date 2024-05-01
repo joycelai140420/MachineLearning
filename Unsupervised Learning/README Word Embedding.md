@@ -228,5 +228,5 @@ slip-gram是拿中間的詞彙去 predict 接下來的 context，也就是拿 Wi
 
 given 中間的 word，我們要去 predict 它的周圍
 
-
+你可以参考范例Skip-gram.py
 
