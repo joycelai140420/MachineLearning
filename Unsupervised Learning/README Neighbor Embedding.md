@@ -125,6 +125,4 @@ Graph Construction
 
 計算 data point 兩兩之間的相似度，超過一個 thereshold 就 connect 起來
 
-![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/dca97f7b-3419-4fbe-9643-be0a9b17acef)
-
 
