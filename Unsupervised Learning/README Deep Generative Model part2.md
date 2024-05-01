@@ -34,6 +34,11 @@ Likelihood 經過推導之後便會得到 KL divergence 和左邊的積分式，
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/445c9f2f-e6d7-4949-955a-059f349ee3ef)
 
 因此，NN 做的事情就是在最小化 P(z) 跟 q(z|x) 的 KL divergence，以及最大化一項積分式，這兩件事合起來就是 auto-encoder。
+请参考VAE.py，代码中是为了理解VAE的基础概念的解释和简化的前向传播代码，真正实作时，还是使用像 TensorFlow 或 PyTorch 这样的框架来完整地训练 VAE。
+可以参考tensorflow VAE.py.上面是原始图像下面是训练出来重构后的图像
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/d701867c-697b-46aa-a36d-280e83a0d0fd)
+
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/392aa9d5-6d3d-4870-a534-6cfc2b42d21b)
 
@@ -49,9 +54,13 @@ VAE 其實它從來沒有去真的學怎麼產生一張看起來像真的圖片�
 Generative Adversarial Network
 Generative adverserial network (GAN) 基本的概念就是有兩個神經網路，一個負責從零開始生成擬真的結果要騙過另外一個神經網路，另外一個則看過真實的資料並想辦法變聰明不被騙過，兩個就迭代的不停進步。前者就是 GAN 之中的 generator，後者則是 discriminator。
 
+
 以圖片生成為例，GAN 的訓練方法就是：
 
 1.首先，Generator 會根據從某個分佈中取樣出的一個 vector 來生成一些假的圖片。
+
 2.接著 discriminator 生成的圖片標為 0 (fake) 以及原有的 labeled data 去調整他的參數。
+
 3.根據第一代的 discriminator，我們把 generator 加 discriminator 視為一個很大的神經網路，並利用梯度下降 (gradient descent) 來做 back-propagation 以最大化輸出，這個動作的意義即是盡可能讓 discriminator 認為生成的圖片是真實的，值得注意的是此處只能調整前半段的參數 (generator)。
+
 4.再回到第一步回去利用進步的 generator 來訓練 discriminator。
