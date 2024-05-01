@@ -153,10 +153,80 @@ Count-based的目標就是為 wi 找一組 vector，也為 wj 找一個組 vecto
 
 這個概念與 LSA 和 matrix factorization 的概念類似。
 
+Prediction-based method
 
+Prediction based 方法跟 Count based 的方法，並沒有誰優誰劣。
 
+Prediction based 的基本想法：learn 一個 neural network。這邊每一個 w 代表一個 word (下標 i-1)，這個 prediction的model這個neural network，它的工作是要 predict 下一個可能出現的 word 。
 
+每一個 word則用 1-of-N encoding把它表示成一個 feature vector。
 
+input: w(下標 i-1) 的 1-of-N encoding 的 feature vector
+output: 下一個 word, wi 是某一個 word 的機率
+假設現在世界上有 10 萬個 word, 這個 model 的 output 就是 10 萬維, 每一維代表了某一個 word, 是下一個 word 的機率。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/99b0f3d8-08a8-49a2-a3ba-5db968ce4be7)
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/c7e23f54-b65a-4198-a912-08ec92f0eff3)
+
+Prediction based 的方法，可以根據一個詞彙的上下文，來了解一個詞彙的涵義。
+
+實際例子
+假設我們的 training data 裡，有一個文章是馬英九跟蔡英文宣誓就職，另外一個是馬英九宣誓就職，在第一個句子裡面蔡英文是 w(下標 i-1)，宣誓就職是 w(下標 i)，在另外一篇文章裡面，馬英九是 w(下標 i-1)，宣誓就職是 w(下標 i)。在這個 Prediction model 裡，不論是 input 蔡英文，還是馬英九的 1-of-N encoding，都會希望 learn 出來的結果是宣誓就職的機率比較大，因為馬英九和蔡英文後面接宣誓就職的機率都很高。
+
+蔡英文和馬英九雖然是不同的 input, 但是最後在 output 的地方得到了一樣的 output，代表中間的 hidden layer 必需要把他們 project 到同樣的空間。所以把這個 prediction model 的第一個 hidden layer 拿出來就可以得到這種 word embedding 的特性。
+
+如果只用 w(下標 i-1)去 predict w(下標 i)，有時候會太弱。就算是人，你給一個詞彙要 predict 下一個詞彙，也並不簡單。
+
+Prediction-based 延伸
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/4624c0fd-008a-425d-bb9b-6560b29101e2)
+
+因此，可以w(下標 i-2) 跟 w(下標 i-1)，predict 下一個 word, w(下標 i)，也可以把這個 model 拓展到 N 個詞彙。一般如果真的要 learn 這樣的 word vector 的話，你能會需要你input是至少 10 個詞彙，才能夠 learn 出比較 reasonable 的結果。
+
+但是實際上，會希望跟 w(下標 i-2) 相連的 weight跟和 w(下標 i-1) 相連的 weight是被 tight 在一起的。
+
+也就是說w(下標 i-2) 的第一個 dimension跟第一個 hidden layer 的第一個 neuron它們中間連的 weight和 w(下標 i-1) 的第一個 dimension和第一個 hidden layer 的 neuron，它們之間連的位置這兩個 weight 必須是一樣的。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/f3120022-7bf8-48ed-9b0e-bd9a13550a43)
+
+如果不這麼做，同一個 word 放在w(下標 i-2) 的位置跟放在 w(下標 i-1) 的位置, 通過這個 transform得到的 embedding 就會不一樣。
+這樣做也可以減少參數量，因為 input 的 dimension 很大，是十萬維，所以 feature vector，就算是50 維它也是一個非常非常、碩大無朋的 matrix讓所有的 1-of-N encoding後面接的 weight 是一樣的，就不會隨著你的 context 的增長而需要更多的參數。
+
+用 formulation 來解釋：
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/f841e7c9-5538-4aaa-b5e2-667cee7096ed)
+
+假設 w(下標 i-2) 的 1-of-N encoding 是 X2，w(下標 i-1) 的 1-of-N encoding 是 X1，它們的長度都是 V 的絕對值。
+
+Z 等於 X(i-2) * W1 + X(i-1) * W2，把 X(i-2) * W1 + X(i-1) * W2，就會得到 Z
+W1 跟 W2都是一個 Z 乘上一個 V dimension 的 weight matrix
+我們強制讓 W1 要等於 W2，兩個一模一樣的 matrix, W。
+所以，實際上在處理這個問題的時候，可以把 X(i-2) 跟 X(i-1) 直接先加起來。因為 W1 跟 W2 是一樣的，可以把 W 提出來，也可以把 X(i-1) 跟X(i-2) 先加起來，再乘上 W 的這個 transform，就會得到 z。
+
+如果要得到一個 word 的 vector ，就把一個 word 的 1-of-N encoding乘上這個 W，就可以得到那一個 word 的 Word Embedding。
+
+怎麼讓這個 W1 跟 W2 它們的 weight 一定一樣呢？
+目標：假設我們現在有兩個 weight, wi 跟 wj，那我們希望 wi 跟 wj，它的 weight 是一樣的
+
+解法：
+
+訓練的時候要給它們一樣的初始值
+update的時候，wi 再減掉 wj 對 C 的偏微分，且 wj 再減掉 wi 對 C 的偏微分。
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/5439632b-4b20-4cf6-b9b9-4864d9539a8a)
+以上只是最基本的型態 Prediction based 的 model ，有種種的變形。且其performance在不同的 task上互有勝負。
+
+以下有兩種作法：
+
+Continuous bag of word, (CBOW)
+Skip-gram
+
+Continuous bag of word, (CBOW)
+剛才是拿前面的詞彙，去 predict 接下來的詞彙，CBOW 的意思是拿某一個詞彙的 context去 predict 中間這個詞彙。也就是拿 W(i-1) 跟 W(i+1) 去 predict Wi。
+
+Skip-gram
+slip-gram是拿中間的詞彙去 predict 接下來的 context，也就是拿 Wi 去 predict W(i-1) 跟 W(i+1)。
+
+given 中間的 word，我們要去 predict 它的周圍
 
 
 
