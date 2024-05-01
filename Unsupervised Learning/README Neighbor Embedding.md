@@ -125,4 +125,4 @@ Graph Construction
 
 計算 data point 兩兩之間的相似度，超過一個 thereshold 就 connect 起來
 
-
+请参考Laplacian Eigenmap.py范例
