@@ -71,8 +71,8 @@ VAE比起 Auto-encoder，加了小 trick：不直接 output code，而是先 out
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/1511dac3-48df-476e-96de-b83da1a4a239)
 舉例：以 Pokemon Image 生成為例：
-
 將其中八維固定，以其他兩維 Random 變化作圖：
+知道code 的每一个dimension背后的意思是什么，就可以控制大概输出的方向。
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/60b4fdeb-6bb1-4fb0-ba52-4396085aea84)
 可以看出這兩個維度大概表達的意思，分別是腳以及尾巴 (雖然不是很明顯)
 可以透過調整得到一個看起來最 OK 的 Pokemon
