@@ -113,6 +113,18 @@ Graph Construction
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/b1f013f6-3b72-41c1-b848-9991db9662f5)
 
+考慮到先前提過的 Smoothness assumption
 
+只算它的 Euclidean distance 來比較點跟點之間的距離是不足夠的
+
+要看在這個 High density 的 region 之間的 distance
+
+有 high density 的 connection 才是真正的接近
+可以用 graph 描述
+Graph Construction
+
+計算 data point 兩兩之間的相似度，超過一個 thereshold 就 connect 起來
+
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/dca97f7b-3419-4fbe-9643-be0a9b17acef)
 
 
