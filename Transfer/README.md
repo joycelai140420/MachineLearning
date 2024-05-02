@@ -280,6 +280,9 @@ Feature extractor 只要在最後加上一個 gradient reversal 的 layer； 這
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/7df74049-aeff-47cf-8965-f8f711773f68)
 
+可以参考Domain adverserial Training.py，使用 MNIST 数据集作为Source和 Fashion MNIST 数据集作为targert。使用 TensorFlow 和 Keras 框架来实现多任务学习，其中一个任务是分类，另一个任务是域分类，用于区分两个不同的数据集。高准确率表明模型能够正确区分不同的数字及能够有效区分两个不同的域。
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/44b3cd36-c6ec-4444-a19e-3a5253bd9bea)
+
 
 Zero-shot Learning
 概覽
@@ -331,7 +334,9 @@ Convex combination of semantic embedding
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/829e088b-8926-43ab-a9a2-61d578eafd18)
 
+Zero-shot learning (ZSL) 是一种迁移学习技术，它允许模型处理在训练阶段从未见过的类别。在这种学习设置中，模型通过理解类别的属性并将它们关联到它已经知道的信息上，来识别新类别。这通常涉及到学习类别的语义表征，比如用一组属性来描述每个类别。请参考Zero-shot Learning.py。使用AWA2（Animals with Attributes 2）数据集，这是一个常用的零样本学习数据集。它包含动物的图像以及描述这些动物的属性。我们的目标是训练一个模型，使其能够识别训练阶段未见过的动物类别。显示了猫（已知类别）和斑马（未知类别）的属性对比。可以看出模型是否能够根据学到的属性关联识别未知类别。
 
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/ea428344-c626-4663-b142-96458db002ac)
 
 
 
@@ -345,5 +350,8 @@ Self-taught Learning
    用夠多的 unlabeled source data 去 learn 一個 feature extractor
    再用這個 feature extractor 在 target data 上抽 feature
 
-![Uploading image.png…]()
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/6a42a165-8316-4e4f-a9ed-8d16f6f1b075)
+
+可以参考Self-taught Learning.py，我们将使用 MNIST 数据集的未标记部分和 Fashion MNIST 数据集的有标记部分来展示 self-taught learning。这个任务将演示如何使用自编码器从未标记的 MNIST 数据中学习特征，然后使用这些特征来改进在 Fashion MNIST 上的分类任务。我这边训练自编码器因为epochs跑的久所以只设定10，你可以设50或更大。或使用早停的方法。
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/562238f2-7eb4-4146-8770-534347af678a)
 
