@@ -41,7 +41,7 @@ BPTT，Back propagation 的進階版
 困難點
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/7b9881d7-d10b-4011-b5b1-5a3047d04dc2)
 
-有時訓練無法像藍色一樣順利，會向綠色一樣
+有時訓練無法像藍色一樣順利，會向綠色一樣total loss，不是這沒幸運像藍色一樣。
 
 這個 learning curve ，抖到某個地方，就突然 NaN，然後程式就segmentation fault
 
@@ -51,7 +51,7 @@ BPTT，Back propagation 的進階版
 RNN 的 Error Surface
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/2bdd41b8-67c3-4b56-9bf9-c2f5cf5aeb3c)
 
-分析原因：RNN 的 error surface 非常的陡峭
+造成綠色線的分析原因：RNN 的 error surface 非常的陡峭
 
     error surface 就是 Total Loss 對參數的變化
     
@@ -64,18 +64,38 @@ RNN 的 Error Surface
     可能正好就跳過一個懸崖 => Loss 會突然暴增
 
         因為之前 gradient 很小，所以 learning rate 調得比較大
-        gradient 突然很大 => 很大的 gradient 再乘上很大的 learning rate
+        gradient 突然很大 => 很大的 gradient 再乘上很大的 learning rate（就飛出去）
         參數就 update 很多，就 NaN => 程式就 segmentation fault
+        
 解決辦法
 
     clipping
 
         當 gradient 大於某一個threshold 時後，不要讓他超過那個 threshold
-        Ex：當 gradient 大於 15 的時候就等於15
+        Ex：當 gradient 大於 15 的時候就等於15（如何）
 
+
+这种常见的“梯度爆炸”问题。模型的权重更新过大，导致训练过程中损失函数（loss）迅速增大或变得非常不稳定，这通常会使得模型完全无法收敛。“梯度爆炸”问题，特别是在权重初始化不当或训练数据特别多变时更为常见。
+
+为了防止梯度爆炸，一种常用的技术是梯度裁剪梯度裁剪（Gradient Clipping），设置梯度裁剪的阈值并没有固定的规则，它通常需要根据具体的应用和数据进行实验调整。一般来说，阈值的选择可以从较小的值开始尝试，并通过实验来调整，以找到最佳的训练效果。常见的阈值范围可能在1到10之间。你可以开始于一个中等的值（比如5），然后根据模型在验证集上的表现来调整。你通常可以慢慢调整去观察现象。我们参考Gradient Clipping.py，来观察随着每一次的Training Steps进行Gradient Clipping后的损失值波动会慢慢变得没这么大下图，但还是要考虑其他技术，例如：调整模型复杂度、使用正则化、优化学习率和其他超参数、改进数据预处理，确保数据质量等等才成更提高模型的准确性。
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/0a5a6b9f-a77e-4c20-839b-3f2e6a83e42f)
 
 
 為什麼 RNN 會有這種奇特的特性
+
+sigmoid function 会造成gradient vanishing (梯度消失)，在之前有讲到ReLU提过，这边在进行粗略的说明。
+
+sigmoid函数会导致梯度消失（gradient vanishing）的问题，主要是因为它在输入值非常大或非常小的时候，其导数（即梯度）会接近于零。sigmoid函数的输出范围在0到1之间。如果网络的输入值很大或很小，sigmoid函数会将这些值“压缩”到接近0或1的输出。这意味着，即使输入值有很大的变化，输出的变化也非常小。因此，当我们计算梯度时，即计算这个函数关于输入的导数，我们会得到一个非常小的值。在深度神经网络中，我们通过反向传播算法来更新网络的权重。这个过程涉及到多个这样的导数的连乘。如果每一层的梯度都很小，那么这些小的梯度相乘后，结果会越来越小，最终可能接近于零。这就是所谓的梯度消失问题，它会导致网络中较早层的权重几乎不更新，从而影响整个网络的学习效果。一般会用ReLU替代sigmoid函数去解决gradient vanishing 。
+
+但是在RNN换成ReLU通常performance会比较差，所以activation funaction在RNN这里并不是这地方的关键点。
+
+不过,在后面有Hinton论文问题到，用一般的RNN（非LSTM），用identity matrix来initialize transition的weight，然后再使用ReLU这个activation funaction时候，他可以得到很好的performance。如果适用一般的方法，initialize transition的weight是random的话，那sigmoid会比ReLU 的performance好。所以RNN用了 identity matrix + Relu的时候，performance有很大可能比LSTM好。
+
+ps:单位矩阵（identity matrix），也称为恒等矩阵，是一种特殊的方阵。在这种矩阵中，主对角线（从左上角到右下角）上的元素都是1，而其余位置的元素都是0。
+例如:
+![1714791408771(1)](https://github.com/joycelai140420/MachineLearning/assets/167413809/b03c51e6-3823-4600-ae40-125793c63305)
+
+
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/d88d4530-6565-4647-bf43-1b6dd51ef09d)
 
 用直觀方法來知道一個 gradient 的大小
@@ -107,7 +127,9 @@ RNN training 的問題
 
     來自於 RNN 把同樣的東西，在 transition 的時候反覆使用
 
-    造成 gradient vanishing 以及 gradient explode
+    会造成 gradient vanishing 以及 gradient explode（观察上面）w = 1、w = 1.01、w = 0.99，经过w 的 999 次方后，就会造成gradient vanishing 以及 gradient explode。且不知道怎么设置Learning rate。
+
+RNN training 的問題其实是来自于，他把同样的东西，在transtiion的时候，在时间和时间转换时候，反复使用，从memory 接到Neuron的那一组weight，在不同时间点，都是反复被使用到导致这样的场景。
 
 解決方法
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/217013da-e95d-49f2-8fb8-b22383d969ed)
@@ -148,9 +170,8 @@ Gated Recurrent Unit (GRU)
 
         input gate 被打開的時候，forget gate 就會被自動關閉，反之亦然
 
-更多處理 gradient vanishing 的 techniques
 
-![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/59da32da-80b1-477e-bb9e-18fdb18ea21a)
+更多處理 gradient vanishing 的 techniques
 
 Clockwise RNN
 
@@ -158,22 +179,29 @@ SCRN
 
 Vanilla(一般) RNN + identity matrix + ReLU activation function
 
+![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/59da32da-80b1-477e-bb9e-18fdb18ea21a)
+
+
 更多應用
+
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/02304809-3901-4ad1-a93f-6e3b625f07a2)
 
 
 RNN 可以做到更複雜的事情
+
     Sentiment Analysis
 
-        知道一句話是 positive 還是 negative
+        用RNN自动learn一个classify，去分类那些文章是 positive 還是 negative
         
-        影評分析
+        例如：影評分析
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/89a6e183-1ed9-4690-ace0-1b59d30bfaba)
 
 key term extraction
 
     Given 一篇文章， predict 這篇文章有那些關鍵詞彙
+
+可以是RNN的最后一个时间的output做attention，把重要informaction 抽出来，在丢到feed forward network得到最后的output。
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/1deae325-e492-4e4e-a92a-b502c150863c)
 
@@ -188,13 +216,15 @@ input 是一串 acoustic feature sequence (每一小段時間切一個vector，0
 
 output 是 character 的 sequence
 
+当input sequence长，output sequence短，例如语音辨识，一段语音翻译成一段文字。
+
 Trimming
 
     好好好棒棒棒棒棒 => 好棒
 
     沒有辦法辨識 好棒棒 (與 好棒 意思相反)
 
-CTC
+CTC（解决，好棒（正向词汇），好棒棒（负向词汇）问题)
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/c5623f2e-4a07-4432-a71e-f6d82a2fced2)
 
 
@@ -204,6 +234,9 @@ CTC
 
     解決疊字的問題
 
+
+
+============================================================================
 
 Sequence to sequence learning
     
@@ -246,9 +279,10 @@ Sequence to sequence learning
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/63b8080f-ed95-442a-93ea-f9f035766bac)
 
+==========================================================================
 
 Beyond Sequence
-    Syntactic parsing tree
+    Syntactic parsing tree：你输入一个句子，输出一个句子或语言结构的层次和组成部分之间关系的一种树状图。
     
         Input：一個句子
 
@@ -269,11 +303,11 @@ Document to vector
 
     bag-of-word
 
-        忽略 word order 的 information
+        忽略 word order 的 information，因为可能字的前后排序，导致意思都会差很多
 
-        字的排列可能造成句子正命或是負面的影響
+        因为output时，字的排列可能造成句子正命或是負面的影響
 
-    Sequence to sequence auto-encoder
+    Sequence to sequence auto-encoder（比较能表达输入的文法意思）
 
         input 一個 word sequence
 
@@ -285,11 +319,14 @@ Document to vector
 
             不需要 label data，只需要收集到大量的文章
 
+        如果要得到语义的意思，用skip-thought，这个是输入一个句子，输出预测下一个句子
+        
     Hierarchical neural auto-encoder
 
         output target會是下一個句子
 
         比較好得到 語意 的意思
+
 
 那如果我們要把一個 document 表示成一個 vector 的話
 
