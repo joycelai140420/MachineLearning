@@ -109,5 +109,46 @@ classifier f1 很弱， 接下來再找一個 classifier f2 ，让他去輔助 f
 然后使用纯粹的NumPy来实现AdaBoost算法是一种极好的方式来深入理解其背后的原理。下面我们将通过一个简单的二分类问题来演示AdaBoost的实现。我们将使用决策树桩（Decision Stump）作为基学习器，决策树桩是一个一层的决策树，通常用于AdaBoost中。通过运行这段代码，你可以深入理解AdaBoost算法如何逐步聚焦于难以分类的样本，并通过组合多个弱学习器来提升模型整体的分类性能。请参考AdaBoost.py。
 
 
+老師也用一個簡單的範例，明白Boosting操作。
+剛剛的演算法如果沒有聽懂就看這個例子 就知道它的意思了 假設大 T = 3，現在 weak 的 classifier 很 weak， 它不是 Decision Tree 也不是 Neural Network，還是很弱的 decision stump ，它做的事情就是 假設 feature 都分佈在二維平面上 ，在二維平面上選一個 dimension 切一刀，從實際意義來看，decision stump 根據一個屬性的一個判斷就決定了最終的分類結果，比如根據水果是否是圓形判斷水果是否為蘋果。其中一邊當作 class 1 ，另外一邊當作 class 2 結束，這個就叫做 decision stump。
+
+一開始每一筆 training data 的 weight 都是一模一樣的都是 1.0。用 decision stump 找一個 function， 這個 function 是 f1，它的 bounder 就切在這個地方， 以左就說是 positive。一邊 class 1 是 positive 的 ，往右就是粉紅色就是 negative 的。然後根據左圖可以看到還是有三個data是分類錯誤。data 總共有10筆，所以三筆 data 分類錯，其 Error Rate 是 0.3，d1 算出來就是 1.53， alpha 算出來就是 0.42，是根據上一頁的公式得到。
+
+現在已經算出 epsilon 1, d1, alpha 1 ，接下來就是改變每一筆 training data 的 weight，分類正確的 weight 就要變小 ，分類錯誤的 weight 就要變大。分類錯誤的要乘 1.53 ，分類對的就要除 1.53 ，讓這三筆分類錯的 weight 變大。分類對的 weight 就變小 ，就有了一組新的 weight 。
+
+![1714870195705](https://github.com/joycelai140420/MachineLearning/assets/167413809/9d63752a-0128-4ef8-bae7-f693ae1be34a)
+
+然後再去找一次另外一個 decision stump，有一組新的 weight ，找出來的 decision stump 就不一樣了！ 在新的 decision stump 切一刀切在這個地方，往左是 positive 往右是 negative， 往左是藍色往右是紅色，會發現有三筆 data 紅色的分類是錯的， 會根據每一筆 data 的 weight 進行計算， 就會發現第二個 classifier 的 Error Rate 是 0.21，它的 d2 = 1.94, alpha 2 = 0.66 ，接下來這三筆 data 分類錯所以給他 weight 比較大，這三筆 data 要把它乘上 1.94， 剩下的 data 把他除掉 1.94。就找到了第二個 classifier ，每一個 classifier 的 weight 就是它 alpha 的值。
+
+![1714870400216](https://github.com/joycelai140420/MachineLearning/assets/167413809/adf3011a-235f-4cc0-a2f3-4f31a66141c6)
+
+把 alpha 的值寫再 classifier 的旁邊， 接下來找第三個 classifier，第三個 classifier 上面是藍色下面是紅色，它這麼講會導致有三筆 data 錯誤，計算一下它的 Error Rate = 0.13 ，然後可以計算它的 d3 和 alpha 。如果有更多 iteration 的話，就會去重新 weight data。但現在只跑三個 iteration 跑完就結束了 得到三個 classifier ，還有他們的 weight 就結束了。
+
+![1714870536277](https://github.com/joycelai140420/MachineLearning/assets/167413809/21dcc1f3-9f20-4c9e-875e-561ed505443f)
+
+最後怎麼把這三個 classifier 組合起來， 把每個 classifier 都乘上對應的 weight，通通加起來再取它的正負號 ，那麼這個加起來的結果到底是怎麼做呢？有三個 decision stump ，這三個 decision stump 把整個二維的平面切成六塊，左上角三個 classifier 都覺得是藍的 ，所以就藍色。中間這一塊他們兩個覺得是藍的，第一個覺得是紅的。但是他們兩個合起來的 weight 比較大 ，所以上面這組就是藍的。右上角第一個覺得是紅的，第二個覺得是紅的，第三個覺得是藍的， 這兩個紅的 weight 合起來比藍的 weight 大 ，所以又是紅的。左下角是第一個藍的，第二個藍的，第三個紅的，兩個藍的合起來比紅的大，所以是藍的 ，下面這個紅的藍的紅的，兩個紅的加起來比藍的大，所以是紅的， 右下角三個 decision stump 都說是紅的，所以是紅的。這樣分，三個 decision stump 沒有一個是 0% 的 Error Rate。他們都有犯一些錯 ，但把這三個 decision stump 組合起來的時候，它告訴我們這三個區塊屬於藍色、這三個區塊屬於紅色， 而它的正確率是 100%。
+
+![1714870813983](https://github.com/joycelai140420/MachineLearning/assets/167413809/a61afea1-94a4-4589-8cb0-7e9170c8c339)
+
+
+
+神秘現象
+
+![1714895586620](https://github.com/joycelai140420/MachineLearning/assets/167413809/e5f14a48-b3ea-4e46-8c88-8c81f0da632d)
+
+縱軸是 Error Rate，橫軸是 training 的 iteration，比較低的這條線是在 training data 上的 Error Rate，比較高的這條線是在 testing data 上的 Error Rate，神奇的是 training data 的 Error Rate，其實很快就變成 0， 大概在 5 個 iteration 之後 ，找五個 weak 的 classifier combine 在一起以後，Error Rate 其實就已經是 0 。但神奇是training data 上10次基本都是0，但 testing data 上的 Error Rate還在持續下降。
+
+為甚麼 我們來看一下下面這個式子，最後找到的 classifier 叫 H(x) ，它是一大堆 weak classifier combine 後的結果。把 weak classifier combine 後的 output 叫作 g(x) ，把 g(x) 乘上 y hat。定義為 margin 我們希望 g(x) 跟 y hat 是同號，如果是同號分類才正確 ，不只希望它同號，希望它相乘以後越大越好。不只是希望這個 g(x)， 如果 x 是 positive，如果 y hat 是正的， 不只希望 g(x) 就是稍微大於 0 0.000001。希望它比 0 大的越多越好。如果 y hat 是正的，g(x) 是 0.00001，那一點的 error 就會讓分類錯誤 ，只要一點 training data、testing data mismatch 就會讓分類錯誤。但如果 y hat 是正的，而 g(x) 是一個非常大的正值。
+
+那 error 的影響就會比較小 如果從現象上來看一下 Adaboost margin 變化的話，會發現如果只有五個 weak classifier 合在一起 margin 的分佈是這個樣子。如果有一百個甚至一千個 weak classifier 結合在一起的時候， 它的分佈就是黑色的實線。
+
+五個 weak classifier 的時候就已經不會再下降， 因為所有的 training data 它的 g(x) * y hat 都是大於 0，會發現 margin 的分布都是在右邊 ，也就是 y hat 跟所有的 g(x) 同號。但在加上 weak classifier 以後，可以增加 margin，增加 margin 的好處是讓你的方法比較 robust 可以在 testing set 上得到比較好的 performance。
+
+![1714896143488](https://github.com/joycelai140420/MachineLearning/assets/167413809/235ab9e8-d9b9-4aa4-bff1-09cefc8e68dc)
+
+
+
+
+
 
 
