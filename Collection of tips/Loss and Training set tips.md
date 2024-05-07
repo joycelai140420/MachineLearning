@@ -59,8 +59,9 @@ L(h^train,Dall)-L(h^all,Dall) <= &
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/2baaee90-f57d-4920-82c6-d8d81a87e90a)
 
 
-如果你将|H|（可以选择的function 数目）变少，则，sample 到坏的记录就变低。
+如果你将|H|（可以选择的function 数目）变少，则，sample 到坏的记录就变低。这里的H可以用VC-dimension(参考台大林軒田 老师内容)
 
 ![image](https://github.com/joycelai140420/MachineLearning/assets/167413809/1d6a6974-47f1-44e2-86bd-839d1aeb59d9)
 
+![1715051061660](https://github.com/joycelai140420/MachineLearning/assets/167413809/c17d0f65-353e-495b-ab5d-6abdf538a655)
 
