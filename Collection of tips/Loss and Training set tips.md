@@ -43,7 +43,9 @@ L(h^train,Dall)-L(h^all,Dall) <= &
 
 因  
     e=&/2，
-    N为所有Dtrain的examples的number数 （分很多train 资料的数目,所以在之前课程又说到N-fold cross Validation ）
+    N为所有Dtrain的examples的number数 （分很多train 资料的数目,所以在之前课程又说到N-fold cross Validation，在MachineLearning/Regression
+/README.md
+ ）
 
 又
     h让训练集会差的几率 小于等于 2exp(-2Ne^2)
