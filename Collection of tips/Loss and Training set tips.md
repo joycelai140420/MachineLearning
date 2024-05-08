@@ -31,8 +31,13 @@ L(h^train,Dall)-L(h^all,Dall) <= &
 
 2.定义e=&/2，Dtrain是坏的，找随机的一个h，则，|L(h,Dtrain)-L(h,Dall) | > e。
 
-
 ![1715045814893](https://github.com/joycelai140420/MachineLearning/assets/167413809/24066503-05eb-4686-858c-a7f5bd216b66)
+
+
+在这边我们可能对h关联很模糊，可以参考台大林轩田老师举的核发信用卡给申请者的范例。h是假设，假设1:到底這個人的年收入有沒有超過80萬台幣， 有超過80萬台幣我們給他信用卡，沒有超過80萬台幣我們不要給他信用卡。假设2:如果這個人負債超過10萬就給信用卡。假设3:如果在工作不滿兩年的話。这些全部的假设就是h，那么H就是所有假设的集合。
+
+![1715146508814](https://github.com/joycelai140420/MachineLearning/assets/167413809/310327b2-8ebb-4da9-ae53-d58d6375fd54)
+
 
 3.训练集会差的几率 = h1 union h2 union h3， 但无法考虑overlap ，所以就直接重覆计算overlap就是会训练集会差的几率的upper bound 上限。但upper bound有可能超过 1，哈哈。
 
