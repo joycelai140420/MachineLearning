@@ -65,3 +65,9 @@ L(h^train,Dall)-L(h^all,Dall) <= &
 
 ![1715051061660](https://github.com/joycelai140420/MachineLearning/assets/167413809/c17d0f65-353e-495b-ab5d-6abdf538a655)
 
+根據上面的P（Dtrain is bad) 小于等于 |H| * 2 exp(-2Ne^2) ，如果我們H用 validation set 也是有可能讓訓練變差，因為可能選擇的validation set也不好，造成overfitting。
+
+那validation set選到差取決於:
+        1.data 大小，
+        2.validation set對應的H複雜程度
+
