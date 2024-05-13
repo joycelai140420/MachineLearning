@@ -53,4 +53,51 @@ ChatGPT ，G就是Generative，P就是Pre-trained，T就是Transformer。可以�
 
 现在人们对于大型语言模型有两个方向的期待，老师姑且这样分类，一个是期待一成为主专才，专才就是专注于某个领域发光发热，另一个就是成为通才，有就是上知天文地理，下知鸡毛蒜皮。这两种期待导致两种不同类型的使用与大型语言模型的方式。
 
+BERT这个模型就是一个做文字填空的模型。通常我们使用它的时候，都是在期待一的情境下使用它。在他成为各种专才的时候，我们进行改造，改造有一种是添加外挂，另一种就是对他的参数做一些微调，才能变成某个任务的专才。
+
+微调Finetune，就是有人输入good morning ，你就要输出早安。然后你就要微调语言模型里面内部的参数，让他可以变成一个翻译的专才，而这边的Finetune就是做gradient descent，将语言模型原来的参数当做训练的初始化参数，当做训练的inirialization(像之前做dnn初始化的参数都是随机)。有人输入good morning ，它才可以输出早安。因为bert本身劣势就是讲不出一句话，所以要加外挂才能讲的一句完整的话。而外挂需要另外训练出来的。需要一些标注的资料，才能够将外挂训练出来。
+
+还有一个外挂的技术就是Adapter，就是语言模型我们都不动他，而外插入其他模组，在大型语言模型里面插入额外的插件，这个插件就是新增加一个layer等等。我们只要动Adapter里面参数。
+
+这个Adapter插件，你可以看左下脚连接，里面有各式各样的插件。这边就是列了几种插件常用的插法。
+
+Bitfit：
+        把所有bias当做额外插件，做finetune时候只finetune那些neuron的bias，weight都不去动他。
+
+Houlsby:
+        虚线是一个transformer encoder的layer。Houlsby就在feed-forward network前面。
+
+AdapterBias：
+        是一个与feed-forward network模组平行的，他会对bitfit forward 的output做一些修改，把Bitfit forward的output做一下平移。
+
+Prefix:
+        他是去改attention
+
+Lora:
+        跟Diffusion model做结合，也是去改attention。在NLP表现很好，在语音上就表现不好。
+
+
+![1715582069343](https://github.com/joycelai140420/MachineLearning/assets/167413809/0e04eea7-c622-44f2-ad50-32e333b9530f)
+
+总之这些插件都要自已去试试看，如果有Adapter，可以降低自己Finetune做的参数量，只要对Adapter微调就可以，当我们要期待一个机器可以做的事情不止一个是很多个任务，如果不用插件，有100任务，你就要调整100模型形成100全新的模型，100个全新的参数。今天的模型都很大，GPT-3就有176个billion参数，这样一个一个调整是不可能。所以用插件的好处就是语言模型都不动，只对每一个任务的Adapter的查件作微调就可以，到时候要存的参数只有大型语言模型本身（GPT-3），然后每一个任务你只存各个任务的Adapter，一百个任务就存100个Adapter跟一个大型语言模型参数。
+
+![1715583249283](https://github.com/joycelai140420/MachineLearning/assets/167413809/0853d6fd-e1e1-418e-8740-3e317a492c6f)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 那么在这里我们先从专才的这边讲起，
