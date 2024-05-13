@@ -51,3 +51,6 @@ ChatGPT ，G就是Generative，P就是Pre-trained，T就是Transformer。可以�
 
 ![1715570348333](https://github.com/joycelai140420/MachineLearning/assets/167413809/8c6afe7a-138f-464e-be9c-89361059dffe)
 
+现在人们对于大型语言模型有两个方向的期待，老师姑且这样分类，一个是期待一成为主专才，专才就是专注于某个领域发光发热，另一个就是成为通才，有就是上知天文地理，下知鸡毛蒜皮。这两种期待导致两种不同类型的使用与大型语言模型的方式。
+
+那么在这里我们先从专才的这边讲起，
