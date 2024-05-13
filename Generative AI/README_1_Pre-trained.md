@@ -144,11 +144,18 @@ T0就是根据这个概念去研发，这是Hugging Face的paper。T0做的跟�
 
 ![1715593546340](https://github.com/joycelai140420/MachineLearning/assets/167413809/a86499c6-7c08-45a3-9297-b303cb83238e)
 
+接下来要讲的另一个技术是Chain of Thought(CoT) Prompting。之前学者发现如果是做In-context learning但在做数学的推论往往效果不好。Chain of Thought(CoT)的技术是，给他问题，也给推论的过程，最后给他答案。期待当遇到新的问题，他会给出推理的过程与答案。发现是有成效的。
+下面是Chain of Thought(CoT)实验结果，是做在数学的题目上，白色是微调GPT-3，蓝色是过去做最好的case，黄色是做标准等prompting PaLM（instruction-based给他指令不给他答案），红色是做了Chain of Thought(CoT)的PaLM。
 
+![1715594977526](https://github.com/joycelai140420/MachineLearning/assets/167413809/f0580aaf-377a-4d4b-8e7f-1e18e4f1d586)
 
+有一种变形Chain of Thought(CoT)就是推论过程给他指令是「Let's think step by steps。」效果也非常好。
 
+还有一个招式是Self-consistency，除了叫他 step by steps。还跟他说把每个推论过程跟答案（因为我们知道每次推论的结果跟答案有时候都不会是一样）然后看看哪一个答案出现最多次，那就是正确答案。虽然这个方法有效，但前提是要能让机器给出推论的过程而不是只给答案，因为发现要求语言模型只给答案出现的答案都很一致，如果要机器给出推论过程，往往就会发发现答案会不一样。
 
+![1715595552537](https://github.com/joycelai140420/MachineLearning/assets/167413809/e897f393-08ee-46da-98f0-43d3ef188832)
 
+接下来如何让机器找Prompt，如果直接给文字这叫做
 
 
 
