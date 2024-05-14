@@ -27,4 +27,23 @@ LLM 簡介
 
 ![1715653698468](https://github.com/joycelai140420/MachineLearning/assets/167413809/9a8bee53-277c-48c3-ab45-9664cdd0dd3b)
 
+那模型還能不能變大呢？從BERT、GPT-2、GPT-3、LaMDA還有沒有更大模型呢？舉例來說，有一個模型叫Switch Transformer 就有1.6T的參數，比GPT-3大三倍。它的結構就跟原本的 Transformer 有差異，他用了一個特殊的結構叫Mixture-expert，就是在這個大模型裡面其實有很多小模組。在用這個模型的時候，不是一次用全部的模組，只是每次調用一部分的模組出來使用，像下圖有一個任務只調用了模組2，另一邊只調用模組1，不一次用所有參數。這樣的好處是在使用上（inference）時候比較快。訓練的時候用到整個參數，但到inference的時候只使用部分的參數，可以節省資源。
+
+![1715655946853](https://github.com/joycelai140420/MachineLearning/assets/167413809/ae513ed6-4566-4416-b45f-351e404ac4f0)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
