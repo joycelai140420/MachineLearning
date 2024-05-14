@@ -155,13 +155,23 @@ T0就是根据这个概念去研发，这是Hugging Face的paper。T0做的跟�
 
 ![1715595552537](https://github.com/joycelai140420/MachineLearning/assets/167413809/e897f393-08ee-46da-98f0-43d3ef188832)
 
-接下来如何让机器找Prompt，如果直接给文字这叫做
+接下来如何让机器找Prompt，如果直接给文字这叫做Hard Prompt，給機器直接給向量(想成模型向量的一部分)叫做Soft Prompt，也可以想成是把Adapter 當做input。
 
+![1715648233593](https://github.com/joycelai140420/MachineLearning/assets/167413809/7136f855-04a9-43db-af18-0b1eff019f79)
 
+我們也可以用reinforcement learning來硬找prompt，現在用language model（Generator）給他生一個句子，這個就當做是圖中GPT-3的ptompt。期待這個句子可以讓GPT-3 output 的結果是我們要，那language model（Generator）要怎麼生成好的ptompt，這個時候就需要有Reward Function。
 
+ps:雖然我覺得這個不是很好應用
 
+![1715648369380](https://github.com/joycelai140420/MachineLearning/assets/167413809/68cea2ed-2add-4583-a734-e446983c32c6)
 
+還有一個是不用reinforcement learning，就是利用LM（大型language model）讓他自己想ptompt。就是給他一個指令，指令中包含填空词（範例是instruction），並給他輸入是什麼，輸出是什麼，要他自己想instruction是什麼。
 
+![1715648977697](https://github.com/joycelai140420/MachineLearning/assets/167413809/d425e7f1-1153-44fd-a1e4-34f13074a69f)
+
+還想要更了解Pre-trained 可參考以下鏈接
+
+![1715649175949](https://github.com/joycelai140420/MachineLearning/assets/167413809/3d3d52b4-db7d-4ef5-b056-f7571af893f4)
 
 
 
