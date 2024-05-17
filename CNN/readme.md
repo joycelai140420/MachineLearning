@@ -148,3 +148,14 @@ CNN tips:
          交叉验证：使用 K 折交叉验证可以更全面地评估模型的泛化能力。
          集成学习：通过集成多个模型的预测来提高测试集上的准确率，例如通过模型融合或集成不同的 CNN 架构。
 
+然後CNN也可以應用在語音和文字處理上，只不過在共享參數的時候，還有些架構上是跟處理影像又不一樣的地方，需要注意。可以參考以下兩個網址。
+Speech：
+ https://dl.acm.org/doi/10.110 9/TASLP.2014.2339736
+ Natural Language Processing
+ https://www.aclweb.org/anth ology/S15-2079/
+![1715911523541](https://github.com/joycelai140420/MachineLearning/assets/167413809/b439decf-71d6-43eb-993e-b673909d27c4)
+
+再來因為CNN對於同一張圖片進行圖片放大縮小翻轉是無法識別，下面這個鏈接也是介紹怎麼突破這樣的場景。
+https://www.youtube.com/watch?v=SoCywZ1hZak
+![1715911630985](https://github.com/joycelai140420/MachineLearning/assets/167413809/1528bf97-6e8e-4204-8f46-7c6f375d177b)
+
